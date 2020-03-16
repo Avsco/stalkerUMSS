@@ -14,4 +14,5 @@ interface ScheduleItem {
     room: string
     teacher: string
 }
+
 export default ScheduleItem
