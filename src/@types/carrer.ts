@@ -1,4 +1,4 @@
-class Carrer {
+export class Carrer {
     code: number = 0
     name: string = ''
     constructor(code: number, name: string) {
@@ -6,5 +6,3 @@ class Carrer {
         this.name = name
     }
 }
-
-export default Carrer

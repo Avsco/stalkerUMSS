@@ -1,189 +1,201 @@
 <template>
-    <div class="search">
-        <p class="search_text">Prueba buscando a un docente!</p>
-        <div class="search_search">
-            <div class="search_suggestions">
-                <input type="text" @keyup="verifyTeacher($event)" autofocus @click="verifyTeacher()" v-model="inputSearch" :spellcheck="false" />
-                <ul>
-                    <li :key="index" class="search_selectTeacher" v-for="(value, index) in SearchTeachers.slice(0, 5)" @click="fillInput(value), search()">{{ value }}</li>
-                </ul>
-            </div>
-            <button @click="search()">Buscar</button>
-        </div>
-        <hr />
+  <div class="search">
+    <p class="search_text">Prueba buscando a un docente!</p>
+    <div class="search_search">
+      <div class="search_suggestions">
+        <input
+          type="text"
+          @keyup="verifyTeacher($event)"
+          autofocus
+          @click="verifyTeacher()"
+          v-model="inputSearch"
+          :spellcheck="false"
+        />
+        <ul>
+          <li
+            :key="index"
+            class="search_selectTeacher"
+            v-for="(value, index) in SearchTeachers.slice(0, 5)"
+            @click="fillInput(value), search()"
+          >{{ value }}</li>
+        </ul>
+      </div>
+      <button @click="search()">Buscar</button>
     </div>
+    <hr />
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import axios from 'axios'
+import { Component, Vue } from "vue-property-decorator";
+import axios from "axios";
 
 @Component({})
 export default class extends Vue {
-    carrerCode: string = ''
-    teachers: string[] = []
-    SearchTeachers: string[] = []
-    inputSearch: string = ''
+  carrerCode: string = "";
+  teachers: string[] = [];
+  SearchTeachers: string[] = [];
+  inputSearch: string = "";
 
-    created() {}
+  async mounted() {
+    try {
+      this.carrerCode = this.$route.params.codeCarrer;
+      let teachers: any[] = [];
+      const response = await axios.get(
+        `http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT/${this.carrerCode}`
+      );
+      const data: any = response.data;
+      data.levels.forEach((level: any) => {
+        level.subjects.forEach((subject: any) => {
+          subject.groups.forEach((group: any) => {
+            group.schedule.forEach((schedule: any) => {
+              teachers.push(schedule.teacher);
+            });
+          });
+        });
+      });
 
-    async mounted() {
-        try {
-            this.carrerCode = this.$route.params.codeCarrer
-            let teachers: any[] = []
-            const response = await axios.get(`http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT/${this.carrerCode}`)
-            const data: any = response.data
-            data.levels.forEach((level: any) => {
-                level.subjects.forEach((subject: any) => {
-                    subject.groups.forEach((group: any) => {
-                        group.schedule.forEach((schedule: any) => {
-                            teachers.push(schedule.teacher)
-                        })
-                    })
-                })
-            })
-
-            const filter = new Set(teachers)
-            filter.forEach((teacher: any) => {
-                this.teachers.push(teacher)
-            })
-        } catch (error) {
-            console.error(error)
-        }
+      const filter = new Set(teachers);
+      filter.forEach((teacher: any) => {
+        this.teachers.push(teacher);
+      });
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    verifyTeacher(event: any = null) {
-        const expReg = RegExp(this.inputSearch.toUpperCase())
-        this.SearchTeachers = []
-        this.teachers.forEach((name) => {
-            if (expReg.test(name)) {
-                this.SearchTeachers.push(name)
-            }
-        })
-    }
+  verifyTeacher(event: any = null) {
+    const expReg = RegExp(this.inputSearch.toUpperCase());
+    this.SearchTeachers = [];
+    this.teachers.forEach(name => {
+      if (expReg.test(name)) {
+        this.SearchTeachers.push(name);
+      }
+    });
+  }
 
-    fillInput(name: string) {
-        this.inputSearch = name.toUpperCase()
-        this.SearchTeachers = []
-    }
+  fillInput(name: string) {
+    this.inputSearch = name.toUpperCase();
+    this.SearchTeachers = [];
+  }
 
-    search() {
-        this.$store.dispatch('stalking/actionSearch', this.inputSearch)
-    }
+  search() {
+    this.$store.dispatch("stalking/actionSearch", this.inputSearch);
+  }
 }
 </script>
 
 <style lang="scss">
-@import '@/scss/abstracts/_variables.scss';
+@import "@/scss/abstracts/_variables.scss";
 .search {
-    width: 100%;
-    margin: 2rem 0;
-    padding: 0 2rem;
+  width: 100%;
+  margin: 2rem 0;
+  padding: 0 2rem;
 
-    &_text {
+  &_text {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  &_search {
+    display: flex;
+    margin-bottom: 5rem;
+
+    button {
+      position: relative;
+      background-color: $secundary_color;
+      height: 2.6rem;
+      width: 5rem;
+      margin-left: 2rem;
+      color: $white;
+      left: -25%;
+    }
+
+    @media (max-width: $medium) {
+      flex-direction: column;
+      align-items: center;
+      button {
+        margin-left: none;
+        z-index: -1;
+        margin-top: 2rem;
+        left: -5%;
+        right: 0;
+      }
+    }
+  }
+
+  &_suggestions {
+    position: relative;
+    left: 20%;
+    flex-grow: 1;
+    input[type="text"] {
+      border: 1px solid $secundary_color;
+      padding: 0 1rem;
+      font-size: 1.2rem;
+      width: 50%;
+      height: 2.6rem;
+    }
+
+    ul {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 50%;
+      background-color: #fff;
+    }
+
+    @media (max-width: $medium) {
+      left: 0;
+      flex-grow: none;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      input[type="text"] {
+        width: 150%;
         text-align: center;
-        font-size: 2rem;
-        margin-bottom: 4rem;
+      }
+
+      ul {
+        width: 150%;
+        left: -25%;
+      }
     }
 
-    &_search {
-        display: flex;
-        margin-bottom: 5rem;
+    @media (max-width: $small) {
+      input[type="text"] {
+        width: 100%;
+        font-size: 1.2rem;
+        text-align: center;
+      }
 
-        button {
-            position: relative;
-            background-color: $secundary_color;
-            height: 2.6rem;
-            width: 5rem;
-            margin-left: 2rem;
-            color: $white;
-            left: -25%;
+      ul {
+        width: 100%;
+        left: 0;
+        li {
+          text-align: center;
         }
-
-        @media (max-width: $medium) {
-            flex-direction: column;
-            align-items: center;
-            button {
-                margin-left: none;
-                z-index: -1;
-                margin-top: 2rem;
-                left: -5%;
-                right: 0;
-            }
-        }
+      }
     }
+  }
 
-    &_suggestions {
-        position: relative;
-        left: 20%;
-        flex-grow: 1;
-        input[type='text'] {
-            border: 1px solid $secundary_color;
-            padding: 0 1rem;
-            font-size: 1.2rem;
-            width: 50%;
-            height: 2.6rem;
-        }
-
-        ul {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 50%;
-            background-color: #fff;
-        }
-
-        @media (max-width: $medium) {
-            left: 0;
-            flex-grow: none;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-
-            input[type='text'] {
-                width: 150%;
-                text-align: center;
-            }
-
-            ul {
-                width: 150%;
-                left: -25%;
-            }
-        }
-
-        @media (max-width: $small) {
-            input[type='text'] {
-                width: 100%;
-                font-size: 1.2rem;
-                text-align: center;
-            }
-
-            ul {
-                width: 100%;
-                left: 0;
-                li {
-                    text-align: center;
-                }
-            }
-        }
-    }
-
-    &_selectTeacher {
-        padding: 0.2rem;
-        border-top: 1px solid $secundary_color;
-        border-left: 1px solid $secundary_color;
-        border-right: 1px solid $secundary_color;
-        list-style-type: none;
-    }
-    &_selectTeacher:hover {
-        background-color: $secundary_color;
-        color: $white;
-    }
-    &_selectTeacher:last-of-type {
-        border-bottom: 1px solid $secundary_color;
-    }
-    &_selectTeacher:first-of-type {
-        border-top: none;
-    }
+  &_selectTeacher {
+    padding: 0.2rem;
+    border-top: 1px solid $secundary_color;
+    border-left: 1px solid $secundary_color;
+    border-right: 1px solid $secundary_color;
+    list-style-type: none;
+  }
+  &_selectTeacher:hover {
+    background-color: $secundary_color;
+    color: $white;
+  }
+  &_selectTeacher:last-of-type {
+    border-bottom: 1px solid $secundary_color;
+  }
+  &_selectTeacher:first-of-type {
+    border-top: none;
+  }
 }
 </style>

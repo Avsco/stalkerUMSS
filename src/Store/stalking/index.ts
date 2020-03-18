@@ -1,7 +1,7 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
 import axios from 'axios'
 
-import { ScheduleItem } from '@/@types/ScheduleItem'
+import { ScheduleItem } from '@/@types/scheduleItem'
 
 export interface IState {
     nameTeacher: string

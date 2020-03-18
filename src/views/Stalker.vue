@@ -1,30 +1,21 @@
 <template>
-    <div class="home">
-        <SearchDocent />
-        <ScheduleTable />
-    </div>
+  <div class="stalker">
+    <SearchDocent />
+    <ScheduleTable />
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Component, Vue } from "vue-property-decorator";
 
-import SearchDocent from '@/components/SearchDocent.vue'
-import ScheduleTable from '@/components/tableSchedule/ScheduleTable.vue'
-import axios from 'axios'
-import Scheduleitem from '@/Class/ScheduleItem'
+import SearchDocent from "@/components/SearchDocent.vue";
+import ScheduleTable from "@/components/tableSchedule/ScheduleTable.vue";
 
 @Component({
-    components: {
-        SearchDocent,
-        ScheduleTable
-    }
+  components: {
+    SearchDocent,
+    ScheduleTable
+  }
 })
-export default class extends Vue {
-    @Getter('stalking/nameTeacher') nameTeacher!: string
-}
+export default class extends Vue {}
 </script>
-
-<style lang="scss">
-@import '@/scss/abstracts/_variables.scss';
-</style>
