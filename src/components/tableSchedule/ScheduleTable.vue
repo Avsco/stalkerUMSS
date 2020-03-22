@@ -72,17 +72,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
 import { ScheduleItem } from "@/@types/scheduleItem";
 
 @Component({})
 export default class extends Vue {
-  @Getter("stalking/schedulesTeacher") readonly schedulesTeacher!: any[];
+  @Prop({ required: true }) schedules!: ScheduleItem[];
 
   tableRows: any = "";
-
   days: string[] = [
     "",
     "Lunes",
@@ -96,7 +95,7 @@ export default class extends Vue {
     this.tableRows = document.querySelectorAll("table")[0].childNodes;
   }
 
-  @Watch("schedulesTeacher")
+  @Watch("schedules")
   onChildschedulesTeacher(val: string, oldVal: string) {
     this.stripContent();
     this.inyectTable();
@@ -109,7 +108,7 @@ export default class extends Vue {
   }
 
   inyectTable() {
-    this.schedulesTeacher.forEach((schedule: ScheduleItem) => {
+    this.schedules.forEach((schedule: ScheduleItem) => {
       for (let index = 1; index < this.tableRows.length; index++) {
         const hour: string = this.clearHour(
           this.tableRows[index].childNodes[0].textContent

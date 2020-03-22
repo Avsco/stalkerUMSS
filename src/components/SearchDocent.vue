@@ -27,47 +27,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import axios from "axios";
 
 @Component({})
 export default class extends Vue {
   carrerCode: string = "";
-  teachers: string[] = [];
   SearchTeachers: string[] = [];
   inputSearch: string = "";
+  @Prop({ required: true }) contend!: string[];
 
-  async mounted() {
-    try {
-      this.carrerCode = this.$route.params.codeCarrer;
-      let teachers: any[] = [];
-      const response = await axios.get(
-        `http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT/${this.carrerCode}`
-      );
-      const data: any = response.data;
-      data.levels.forEach((level: any) => {
-        level.subjects.forEach((subject: any) => {
-          subject.groups.forEach((group: any) => {
-            group.schedule.forEach((schedule: any) => {
-              teachers.push(schedule.teacher);
-            });
-          });
-        });
-      });
-
-      const filter = new Set(teachers);
-      filter.forEach((teacher: any) => {
-        this.teachers.push(teacher);
-      });
-    } catch (error) {
-      console.error(error);
-    }
+  mounted() {
+    document.body.addEventListener("click", e => {
+      const target: any = e.target;
+      if (!(target.nodeName === "INPUT")) this.SearchTeachers = [];
+    });
   }
 
   verifyTeacher(event: any = null) {
     const expReg = RegExp(this.inputSearch.toUpperCase());
     this.SearchTeachers = [];
-    this.teachers.forEach(name => {
+    this.contend.forEach(name => {
       if (expReg.test(name)) {
         this.SearchTeachers.push(name);
       }
