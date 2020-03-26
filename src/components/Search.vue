@@ -1,6 +1,5 @@
 <template>
   <div class="search">
-    <p class="search_text">Prueba buscando a un docente!</p>
     <div class="search_search">
       <div class="search_suggestions">
         <input
@@ -15,7 +14,7 @@
           <li
             :key="index"
             class="search_selectTeacher"
-            v-for="(value, index) in SearchTeachers.slice(0, 5)"
+            v-for="(value, index) in Search.slice(0, 5)"
             @click="fillInput(value), search()"
           >{{ value }}</li>
         </ul>
@@ -32,35 +31,32 @@ import axios from "axios";
 
 @Component({})
 export default class extends Vue {
-  carrerCode: string = "";
-  SearchTeachers: string[] = [];
+  @Prop({ required: true }) content!: string[];
+  @Prop({ required: true }) dispatchTo!: string;
+  Search: string[] = [];
   inputSearch: string = "";
-  @Prop({ required: true }) contend!: string[];
 
   mounted() {
     document.body.addEventListener("click", e => {
       const target: any = e.target;
-      if (!(target.nodeName === "INPUT")) this.SearchTeachers = [];
+      if (!(target.nodeName === "INPUT")) this.Search = [];
     });
   }
 
   verifyTeacher(event: any = null) {
     const expReg = RegExp(this.inputSearch.toUpperCase());
-    this.SearchTeachers = [];
-    this.contend.forEach(name => {
-      if (expReg.test(name)) {
-        this.SearchTeachers.push(name);
-      }
-    });
+    this.Search = this.content.filter(option => expReg.test(option));
+    if (event !== null && event.key === "Enter" && this.Search.length === 1)
+      this.fillInput(this.Search[0]);
   }
 
-  fillInput(name: string) {
-    this.inputSearch = name.toUpperCase();
-    this.SearchTeachers = [];
+  fillInput(option: string) {
+    this.inputSearch = option.toUpperCase();
+    this.Search = [];
   }
 
   search() {
-    this.$store.dispatch("stalking/actionSearch", this.inputSearch);
+    this.$store.dispatch(this.dispatchTo, this.inputSearch);
   }
 }
 </script>
@@ -69,22 +65,13 @@ export default class extends Vue {
 @import "@/scss/abstracts/_variables.scss";
 .search {
   width: 100%;
-  margin: 2rem 0;
-  padding: 0 2rem;
-
-  &_text {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 4rem;
-  }
-
   &_search {
     display: flex;
     margin-bottom: 5rem;
 
     button {
       position: relative;
-      background-color: $secundary_color;
+      background-color: $primary_color;
       height: 2.6rem;
       width: 5rem;
       margin-left: 2rem;
@@ -110,7 +97,7 @@ export default class extends Vue {
     left: 20%;
     flex-grow: 1;
     input[type="text"] {
-      border: 1px solid $secundary_color;
+      border: 1px solid $primary_color;
       padding: 0 1rem;
       font-size: 1.2rem;
       width: 50%;
@@ -160,19 +147,23 @@ export default class extends Vue {
     }
   }
 
+  hr {
+    width: 100%;
+  }
+
   &_selectTeacher {
     padding: 0.2rem;
-    border-top: 1px solid $secundary_color;
-    border-left: 1px solid $secundary_color;
-    border-right: 1px solid $secundary_color;
+    border-top: 1px solid $primary_color;
+    border-left: 1px solid $primary_color;
+    border-right: 1px solid $primary_color;
     list-style-type: none;
   }
   &_selectTeacher:hover {
-    background-color: $secundary_color;
+    background-color: $primary_color;
     color: $white;
   }
   &_selectTeacher:last-of-type {
-    border-bottom: 1px solid $secundary_color;
+    border-bottom: 1px solid $primary_color;
   }
   &_selectTeacher:first-of-type {
     border-top: none;

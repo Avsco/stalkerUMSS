@@ -52,7 +52,8 @@ export default class extends Vue {
     text-align: center;
     font-size: 1.8rem;
     font-weight: 700;
-    padding-top: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1.4rem;
   }
 }
 </style>

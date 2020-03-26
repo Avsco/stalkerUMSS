@@ -1,53 +1,43 @@
 <template>
   <div class="stalker">
-    <SearchDocent :contend="teachers" />
+    <p class="stalker_text">Prueba buscando a un docente!</p>
+    <Search :content="teachers" dispatchTo="stalking/actionSearch" />
     <ScheduleTable :schedules="schedules" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
-import axios from "axios";
 
-import SearchDocent from "@/components/SearchDocent.vue";
+import Search from "@/components/Search.vue";
 import ScheduleTable from "@/components/tableSchedule/ScheduleTable.vue";
+
+import { ScheduleItem } from "@/@types/scheduleItem";
+import { getTeachers } from "@/services/teachers";
 
 @Component({
   components: {
-    SearchDocent,
+    Search,
     ScheduleTable
   }
 })
 export default class extends Vue {
-  @Getter("stalking/schedulesTeacher") readonly schedules!: any[];
-  carrerCode: string = "";
+  @Getter("stalking/schedulesTeacher") readonly schedules!: ScheduleItem[];
   teachers: string[] = [];
-  async mounted() {
-    try {
-      this.carrerCode = this.$route.params.codeCarrer;
-      let teachers: any[] = [];
-      const response = await axios.get(
-        `http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT/${this.carrerCode}`
-      );
-      const data: any = response.data;
-      data.levels.forEach((level: any) => {
-        level.subjects.forEach((subject: any) => {
-          subject.groups.forEach((group: any) => {
-            group.schedule.forEach((schedule: any) => {
-              teachers.push(schedule.teacher);
-            });
-          });
-        });
-      });
 
-      const filter = new Set(teachers);
-      filter.forEach((teacher: any) => {
-        this.teachers.push(teacher);
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  async mounted() {
+    this.teachers = await getTeachers(this.$route.params.codeCarrer);
   }
 }
 </script>
+
+<style lang="scss">
+.stalker {
+  &_text {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 4rem;
+  }
+}
+</style>
