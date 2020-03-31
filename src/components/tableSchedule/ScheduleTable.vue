@@ -185,12 +185,21 @@ export default class extends Vue {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5rem 0;
+  padding: 5rem;
+
+  @media (max-width: $small) {
+    padding: 5rem 0;
+  }
 
   table {
     border-collapse: collapse;
     width: 100%;
     overflow-x: scroll;
+    display: table;
+
+    @media (max-width: $small) {
+      display: block;
+    }
   }
 
   tr,
@@ -202,7 +211,7 @@ export default class extends Vue {
   th:first-child {
     background-color: $primary_color;
     border: none;
-    padding: 1rem 0;
+    padding: 1.4rem 0;
     span {
       color: white;
     }

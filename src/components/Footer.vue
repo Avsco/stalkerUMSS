@@ -69,7 +69,7 @@ export default class extends Vue {
     width: 80px;
 
     @media (max-width: $small) {
-      left: 50%;
+      left: 30%;
     }
   }
 }

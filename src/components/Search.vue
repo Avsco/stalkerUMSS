@@ -65,6 +65,7 @@ export default class extends Vue {
 @import "@/scss/abstracts/_variables.scss";
 .search {
   width: 100%;
+
   &_search {
     display: flex;
     margin-bottom: 5rem;

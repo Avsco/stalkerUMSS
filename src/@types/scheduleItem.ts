@@ -6,3 +6,9 @@ export interface ScheduleItem {
     room: string
     teacher: string
 }
+
+export interface subjectMatter {
+    subjectName: string
+    subjectGroup: string
+    schedule: ScheduleItem[]
+}

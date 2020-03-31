@@ -4,7 +4,6 @@ import VueRouter from 'vue-router'
 import Frontend from '../Layouts/Frontend.vue'
 
 import Stalker from '../views/Stalker.vue'
-import SelectCarrer from '../views/SelectCarrer.vue'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -19,11 +18,6 @@ const router = new VueRouter({
             children: [
                 {
                     path: '',
-                    name: 'Home',
-                    component: SelectCarrer
-                },
-                {
-                    path: '/searchDocent/:codeCarrer',
                     name: 'Docentes',
                     component: Stalker
                 }

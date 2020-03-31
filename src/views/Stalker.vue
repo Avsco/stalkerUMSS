@@ -14,7 +14,7 @@ import Search from "@/components/Search.vue";
 import ScheduleTable from "@/components/tableSchedule/ScheduleTable.vue";
 
 import { ScheduleItem } from "@/@types/scheduleItem";
-import { getTeachers } from "@/services/teachers";
+import { getAllTeachers } from "@/services/teachers";
 
 @Component({
   components: {
@@ -27,7 +27,7 @@ export default class extends Vue {
   teachers: string[] = [];
 
   async mounted() {
-    this.teachers = await getTeachers(this.$route.params.codeCarrer);
+    this.teachers = await getAllTeachers();
   }
 }
 </script>
