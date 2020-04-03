@@ -1,14 +1,14 @@
 import axios from 'axios'
 import { getCodes } from './carrerCodes'
+import { concatUrl } from '@/@types/url'
 
 export async function getAllTeachers(): Promise<string[]> {
     try {
         const carrersCode = await getCodes()
         let teachers: string[] = []
 
-        for (let index = 0; index < carrersCode.length; index++) {
-            const teachersOfCarrer = await getTeachers(carrersCode[index])
-
+        for (const code of carrersCode) {
+            const teachersOfCarrer = await getTeachers(code)
             teachers.push(...teachersOfCarrer)
         }
 
@@ -17,7 +17,7 @@ export async function getAllTeachers(): Promise<string[]> {
 
         return teachers
     } catch (e) {
-        console.log(e)
+        console.error(e)
         return []
     }
 }
@@ -25,7 +25,7 @@ export async function getAllTeachers(): Promise<string[]> {
 export async function getTeachers(carrerCode: string): Promise<string[]> {
     try {
         let teachers: string[] = []
-        const { data } = await axios.get(`http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT/${carrerCode}`)
+        const { data } = await axios.get(concatUrl(carrerCode))
         data.levels.forEach((level: any) => {
             level.subjects.forEach((subject: any) => {
                 subject.groups.forEach((group: any) => {
@@ -36,8 +36,7 @@ export async function getTeachers(carrerCode: string): Promise<string[]> {
 
         return teachers
     } catch (e) {
-        console.log(e)
-
+        console.error(e)
         return []
     }
 }

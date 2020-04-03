@@ -1,13 +1,13 @@
 import axios from 'axios'
 
+import { getUrl } from '@/@types/url'
+
 export async function getCodes() {
     try {
-        const codeCarrers: string[] = []
-        const { data } = await axios.get(`http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT`)
-        data.forEach((carrer: any) => codeCarrers.push(carrer.code))
-        return codeCarrers
+        const { data } = await axios.get(getUrl())
+        return data.map((carrer: any) => carrer.code)
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return []
     }
 }

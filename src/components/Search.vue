@@ -4,9 +4,8 @@
       <div class="search_suggestions">
         <input
           type="text"
-          @keyup="verifyTeacher($event)"
+          @input="verifyTeacher($event)"
           autofocus
-          @click="verifyTeacher()"
           v-model="inputSearch"
           :spellcheck="false"
         />
@@ -43,10 +42,11 @@ export default class extends Vue {
     });
   }
 
-  verifyTeacher(event: any = null) {
+  verifyTeacher(event: any) {
     const expReg = RegExp(this.inputSearch.toUpperCase());
     this.Search = this.content.filter(option => expReg.test(option));
-    if (event !== null && event.key === "Enter" && this.Search.length === 1)
+
+    if (event.key === "Enter" && this.Search.length === 1)
       this.fillInput(this.Search[0]);
   }
 
@@ -153,7 +153,7 @@ export default class extends Vue {
   }
 
   &_selectTeacher {
-    padding: 0.2rem;
+    padding: 0.2rem 1rem;
     border-top: 1px solid $primary_color;
     border-left: 1px solid $primary_color;
     border-right: 1px solid $primary_color;

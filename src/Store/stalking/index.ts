@@ -1,6 +1,9 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
 import axios from 'axios'
 
+import { getCodes } from '@/services/carrerCodes'
+import { concatUrl } from '@/@types/url'
+
 import { ScheduleItem } from '@/@types/scheduleItem'
 
 export interface IState {
@@ -36,7 +39,7 @@ const actions: ActionTree<TypeState, TypeState> = {
             let schedules: ScheduleItem[] = []
 
             codeCarrers.forEach(async (code: string) => {
-                const { data } = await axios.get(`http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT/${code}`)
+                const { data } = await axios.get(concatUrl(code))
 
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
@@ -58,9 +61,7 @@ const actions: ActionTree<TypeState, TypeState> = {
 
     actionGetCodes: async ({ dispatch }, nameTeacher) => {
         try {
-            const codeCarrers: string[] = []
-            const { data } = await axios.get(`http://api.cappuchino.scesi.umss.edu.bo/schedule/FCyT`)
-            data.forEach((carrer: any) => codeCarrers.push(carrer.code))
+            const codeCarrers: string[] = await getCodes()
             dispatch('actionGetScheludes', {
                 nameTeacher: nameTeacher,
                 codeCarrers: codeCarrers
