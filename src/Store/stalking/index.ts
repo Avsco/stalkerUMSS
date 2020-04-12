@@ -5,27 +5,28 @@ import { getCodes } from '@/services/carrerCodes'
 import { concatUrl } from '@/@types/url'
 
 import { ScheduleItem } from '@/@types/scheduleItem'
+import { subjectMatter, compareSubjectsMatters } from '@/@types/subjectMatter'
 
 export interface IState {
     nameTeacher: string
-    schedulesTeacher: ScheduleItem[]
+    schedulesTeacher: subjectMatter[]
 }
 
 const state = (): IState => ({
     nameTeacher: '',
-    schedulesTeacher: []
+    schedulesTeacher: [],
 })
 
 type TypeState = ReturnType<typeof state>
 
 const getters: GetterTree<TypeState, TypeState> = {
-    nameTeacher: (state) => state.nameTeacher,
-    schedulesTeacher: (state) => state.schedulesTeacher
+    nameTeacher: (state: IState) => state.nameTeacher,
+    schedulesTeacher: (state: IState) => state.schedulesTeacher,
 }
 
 const mutations: MutationTree<TypeState> = {
-    mutationTeacher: (state, payload) => (state.nameTeacher = payload),
-    mutationSchedules: (state, payload) => (state.schedulesTeacher = payload)
+    mutationTeacher: (state: IState, payload: string) => (state.nameTeacher = payload),
+    mutationSchedules: (state: IState, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
 }
 
 const actions: ActionTree<TypeState, TypeState> = {
@@ -36,7 +37,7 @@ const actions: ActionTree<TypeState, TypeState> = {
 
     actionGetScheludes: async ({ commit }, { nameTeacher, codeCarrers }) => {
         try {
-            let schedules: ScheduleItem[] = []
+            let schedulesMatter: subjectMatter[] = []
 
             codeCarrers.forEach(async (code: string) => {
                 const { data } = await axios.get(concatUrl(code))
@@ -44,15 +45,26 @@ const actions: ActionTree<TypeState, TypeState> = {
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
                         subject.groups.forEach((group: any) => {
-                            group.schedule.forEach((schedule: ScheduleItem) => {
-                                if (schedule.teacher === nameTeacher) schedules.push(schedule)
-                            })
+                            if (!compareSubjectsMatters(schedulesMatter, group.code, subject.name)) {
+                                let schedules: ScheduleItem[] = []
+                                group.schedule.forEach((schedule: ScheduleItem) => {
+                                    if (schedule.teacher === nameTeacher) {
+                                        schedules.push(schedule)
+                                    }
+                                })
+                                if (schedules.length > 0) {
+                                    schedulesMatter.push({
+                                        subjectName: subject.name,
+                                        groupCode: group.code,
+                                        schedules: schedules,
+                                    })
+                                }
+                            }
                         })
                     })
                 })
             })
-
-            commit('mutationSchedules', schedules)
+            commit('mutationSchedules', schedulesMatter)
         } catch (error) {
             console.error(error)
             commit('mutationSchedules', [])
@@ -64,13 +76,13 @@ const actions: ActionTree<TypeState, TypeState> = {
             const codeCarrers: string[] = await getCodes()
             dispatch('actionGetScheludes', {
                 nameTeacher: nameTeacher,
-                codeCarrers: codeCarrers
+                codeCarrers: codeCarrers,
             })
         } catch (error) {
-            console.log(error)
+            console.error(error)
             dispatch('actionGetScheludes', [])
         }
-    }
+    },
 }
 
 export default {
@@ -78,5 +90,5 @@ export default {
     state: state,
     getters: getters,
     mutations: mutations,
-    actions: actions
+    actions: actions,
 }

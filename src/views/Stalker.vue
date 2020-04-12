@@ -2,7 +2,7 @@
   <div class="stalker">
     <p class="stalker_text">Prueba buscando a un docente!</p>
     <Search :content="teachers" dispatchTo="stalking/actionSearch" />
-    <ScheduleTable :schedules="schedules" />
+    <ScheduleTable :subjectMatters="schedules" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
 import Search from "@/components/Search.vue";
-import ScheduleTable from "@/components/tableSchedule/ScheduleTable.vue";
+import ScheduleTable from "@/components/tableSchedule/ScheduleTable2.vue";
 
 import { ScheduleItem } from "@/@types/scheduleItem";
 import { getAllTeachers } from "@/services/teachers";
