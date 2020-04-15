@@ -5,7 +5,7 @@ import { getCodes } from '@/services/carrerCodes'
 import { concatUrl } from '@/@types/url'
 
 import { ScheduleItem } from '@/@types/scheduleItem'
-import { subjectMatter, compareSubjectsMatters } from '@/@types/subjectMatter'
+import { subjectMatter, subjectMatters } from '@/@types/subjectMatter'
 
 export interface IState {
     nameTeacher: string
@@ -37,7 +37,7 @@ const actions: ActionTree<TypeState, TypeState> = {
 
     actionGetScheludes: async ({ commit }, { nameTeacher, codeCarrers }) => {
         try {
-            let schedulesMatter: subjectMatter[] = []
+            let schedulesMatter: subjectMatters = new subjectMatters()
 
             codeCarrers.forEach(async (code: string) => {
                 const { data } = await axios.get(concatUrl(code))
@@ -45,26 +45,22 @@ const actions: ActionTree<TypeState, TypeState> = {
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
                         subject.groups.forEach((group: any) => {
-                            if (!compareSubjectsMatters(schedulesMatter, group.code, subject.name)) {
-                                let schedules: ScheduleItem[] = []
-                                group.schedule.forEach((schedule: ScheduleItem) => {
-                                    if (schedule.teacher === nameTeacher) {
-                                        schedules.push(schedule)
-                                    }
-                                })
-                                if (schedules.length > 0) {
-                                    schedulesMatter.push({
-                                        subjectName: subject.name,
-                                        groupCode: group.code,
-                                        schedules: schedules,
-                                    })
+                            let schedules: ScheduleItem[] = []
+                            group.schedule.forEach((schedule: ScheduleItem) => {
+                                if (schedule.teacher === nameTeacher) {
+                                    schedules.push(schedule)
                                 }
-                            }
+                            })
+                            schedulesMatter.add({
+                                subjectName: subject.name,
+                                groupCode: group.code,
+                                schedules: schedules,
+                            })
                         })
                     })
                 })
             })
-            commit('mutationSchedules', schedulesMatter)
+            commit('mutationSchedules', schedulesMatter.getSubjectMatters())
         } catch (error) {
             console.error(error)
             commit('mutationSchedules', [])
