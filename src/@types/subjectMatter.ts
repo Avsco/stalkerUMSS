@@ -6,13 +6,6 @@ export interface subjectMatter {
     schedules: ScheduleItem[]
 }
 
-export const compareSubjectsMatters = (subjectMatters: subjectMatter[], groupCode: string, subjectName: string) => {
-    subjectMatters.forEach((subjectMatterOne) => {
-        if (subjectMatterOne.groupCode === groupCode && subjectMatterOne.subjectName === subjectName) return true
-    })
-    return false
-}
-
 export class subjectMatters {
     subjectMatters: subjectMatter[] = []
 
