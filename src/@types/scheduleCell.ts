@@ -4,5 +4,4 @@ export interface scheduleCell {
     room: string
     groupCode: string
     times: number
-    indexDay: number
 }

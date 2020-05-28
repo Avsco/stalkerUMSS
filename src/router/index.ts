@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Frontend from '../Layouts/Frontend.vue'
+import Frontend from '@/Layouts/Frontend.vue'
 
-import Stalker from '../views/Stalker.vue'
+import Stalker from '@/views/Stalker.vue'
+import Cappuchino from '@/views/Cappuchino.vue'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -17,14 +18,19 @@ const router = new VueRouter({
             component: Frontend,
             children: [
                 {
-                    path: '',
+                    path: 'stalker',
                     name: 'Docentes',
-                    component: Stalker
-                }
-            ]
-        }
+                    component: Stalker,
+                },
+                {
+                    path: 'capucchino',
+                    name: 'Horario',
+                    component: Cappuchino,
+                },
+            ],
+        },
     ],
-    scrollBehavior: (to, from) => ({ x: 0, y: 0 })
+    scrollBehavior: (to: any, from: any) => ({ x: 0, y: 0 }),
 })
 
 export default router

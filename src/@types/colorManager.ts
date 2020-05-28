@@ -1,9 +1,9 @@
 export default class colorManager {
-    colors: string[] = ['#BFDDE7', '#E2D3A8', '#E6AC86', '#F4D1C4', '#B29299', '#d89b96', '#C4D7D1']
+    colors: string[] = ['#BFDDE7', '#d89b96', '#F4D1C4', '#E2D3A8', '#E6AC86', '#B29299', '#C4D7D1']
 
     addColors = (subjectMattersSize: number) => {
         for (let index = 0; index < subjectMattersSize; index++) {
-            document.querySelectorAll('.color' + index).forEach(classColor => {
+            document.querySelectorAll('.color' + index).forEach((classColor) => {
                 const td: any = classColor.parentNode
                 td.style.background = this.getColor(index)
             })
@@ -20,7 +20,7 @@ export default class colorManager {
 
     removeColors = () => {
         const nodesWithStyles = document.querySelectorAll('td[style]')
-        nodesWithStyles.forEach(nodeWithStyle => {
+        nodesWithStyles.forEach((nodeWithStyle) => {
             nodeWithStyle.removeAttribute('style')
         })
     }

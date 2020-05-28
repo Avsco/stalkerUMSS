@@ -23,7 +23,6 @@ export default class extends Vue {}
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem;
   &_linkmain {
     text-decoration: none;
     h2 {

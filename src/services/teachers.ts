@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { getCodes } from './carrerCodes'
+import { getCarrers } from './carrer'
 import { concatUrl } from '@/@types/url'
 
 export async function getAllTeachers(): Promise<string[]> {
     try {
-        const carrersCode = await getCodes()
+        const carrersCode = (await getCarrers()).map((carrer: any) => carrer.code)
         let teachers: string[] = []
 
         for (const code of carrersCode) {

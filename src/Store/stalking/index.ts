@@ -1,7 +1,7 @@
 import { GetterTree, MutationTree, ActionTree } from 'vuex'
 import axios from 'axios'
 
-import { getCodes } from '@/services/carrerCodes'
+import { getCarrers } from '@/services/carrer'
 import { concatUrl } from '@/@types/url'
 
 import { ScheduleItem } from '@/@types/scheduleItem'
@@ -10,23 +10,27 @@ import { subjectMatter, subjectMatters } from '@/@types/subjectMatter'
 export interface IState {
     nameTeacher: string
     schedulesTeacher: subjectMatter[]
+    allTeachers: string[]
 }
 
 const state = (): IState => ({
     nameTeacher: '',
     schedulesTeacher: [],
+    allTeachers: [],
 })
 
 type TypeState = ReturnType<typeof state>
 
 const getters: GetterTree<TypeState, TypeState> = {
-    nameTeacher: (state: IState) => state.nameTeacher,
-    schedulesTeacher: (state: IState) => state.schedulesTeacher,
+    nameTeacher: (state) => state.nameTeacher,
+    schedulesTeacher: (state) => state.schedulesTeacher,
+    allTeachers: (state) => state.allTeachers,
 }
 
 const mutations: MutationTree<TypeState> = {
-    mutationTeacher: (state: IState, payload: string) => (state.nameTeacher = payload),
-    mutationSchedules: (state: IState, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
+    mutationTeacher: (state, payload: string) => (state.nameTeacher = payload),
+    mutationSchedules: (state, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
+    mutationAllTeachers: (state, payload: string[]) => (state.allTeachers = payload),
 }
 
 const actions: ActionTree<TypeState, TypeState> = {
@@ -69,7 +73,7 @@ const actions: ActionTree<TypeState, TypeState> = {
 
     actionGetCodes: async ({ dispatch }, nameTeacher) => {
         try {
-            const codeCarrers: string[] = await getCodes()
+            const codeCarrers: string[] = (await getCarrers()).map((carrer: any) => carrer.code)
             dispatch('actionGetScheludes', {
                 nameTeacher: nameTeacher,
                 codeCarrers: codeCarrers,
@@ -79,12 +83,15 @@ const actions: ActionTree<TypeState, TypeState> = {
             dispatch('actionGetScheludes', [])
         }
     },
+
+    //TODO sobre lo como hacer que get Codes sea algo mas global y accesible
+    actionGetAllTeachers: async ({ commit }) => {},
 }
 
 export default {
     namespaced: true,
-    state: state,
-    getters: getters,
-    mutations: mutations,
-    actions: actions,
+    state,
+    getters,
+    mutations,
+    actions,
 }

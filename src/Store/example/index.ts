@@ -14,8 +14,8 @@ const actions: ActionTree<TypeState, TypeState> = {}
 
 export default {
     namespaced: true,
-    state: state,
-    getters: getters,
-    mutations: mutations,
-    actions: actions
+    state,
+    getters,
+    mutations,
+    actions,
 }

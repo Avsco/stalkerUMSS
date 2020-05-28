@@ -1,80 +1,28 @@
 <template>
   <div class="table">
     <table>
-      <tr class="table_days">
-        <th :key="index" v-for="(value, index) in days">
+      <tr>
+        <th v-for="(value, index) in days" :class="index == 0 ? '' : 'table_days'" :key="index">
           <span>{{ value }}</span>
         </th>
       </tr>
-
-      <tr>
-        <th>
-          <span>6:45-8:15</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
+      <tr v-for="(valueOne, indexOne) in hours.dataForHTML()" :key="indexOne">
+        <template v-for="(valueTwo, indexTwo) in days">
+          <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
+            <span>{{valueOne}}</span>
+          </td>
+          <ScheduleItem
+            v-else-if="isThereContent(indexOne, valueTwo)"
+            :key="indexTwo"
+            :schedules="getContend(indexOne, valueTwo)"
+          />
+          <td v-else :key="indexTwo"></td>
+        </template>
       </tr>
-
       <tr>
-        <th>
-          <span>8:15-9:45</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>9:45-11:15</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>11:15-12:45</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>12:45-14:15</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>14:15-15:45</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>15:45-17:15</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>17:15-18:45</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>18:45-20:15</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
-      </tr>
-
-      <tr>
-        <th>
-          <span>20:15-21:45</span>
-        </th>
-        <th :key="index" v-for="(value, index) in days.slice(1, 7)"></th>
+        <td class="table_hours">
+          <span>21:45</span>
+        </td>
       </tr>
     </table>
   </div>
@@ -84,14 +32,22 @@
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
-import { ScheduleItem } from "@/@types/scheduleItem";
+import ScheduleItem from "./ScheduleItem.vue";
 
-@Component({})
+import { subjectMatter } from "@/@types/subjectMatter";
+import colorManager from "@/@types/colorManager";
+import hoursManager from "@/@types/hoursManager";
+import { scheduleCell } from "../../@types/scheduleCell";
+
+@Component({
+  components: {
+    ScheduleItem
+  }
+})
 export default class extends Vue {
-  @Prop({ required: true }) schedules!: ScheduleItem[];
-
-  indexColor: number = 0;
-  tableRows: any = "";
+  @Prop({ required: true }) subjectMatters!: subjectMatter[];
+  hours: hoursManager = new hoursManager();
+  colors: colorManager = new colorManager();
   days: string[] = [
     "",
     "Lunes",
@@ -101,128 +57,103 @@ export default class extends Vue {
     "Viernes",
     "Sabado"
   ];
-  colors: string[] = [
-    "#BFDDE7",
-    "#E2D3A8",
-    "#E6AC86",
-    "#F4D1C4",
-    "#B29299",
-    "#d89b96",
-    "#C4D7D1"
-  ];
 
-  mounted() {
-    this.tableRows = document.querySelectorAll("table")[0].childNodes;
+  @Watch("subjectMatters")
+  onChildChanged() {
+    this.colors.watchColors(this.subjectMatters.length);
   }
 
-  @Watch("schedules")
-  onChildschedules() {
-    this.stripContent();
-    this.inyectTable();
-  }
+  compareDay = (day: string, scheduleDay: string) =>
+    day.slice(0, 2).toUpperCase() === scheduleDay;
 
-  clearHour(hour: string) {
-    const firstHour: string = hour.slice(0, hour.indexOf("-"));
-    const cut: number = hour.indexOf(":");
-    return firstHour.slice(0, cut) + firstHour.slice(cut + 1);
-  }
+  compareHour = (indexHour: number, scheduleHour: string) =>
+    this.hours.getValue(indexHour) == scheduleHour;
 
-  setIndexColor() {
-    if (this.indexColor === this.colors.length - 1) this.indexColor = -1;
-    this.indexColor += 1;
-  }
-
-  inyectTable() {
-    this.schedules.forEach((schedule: ScheduleItem) => {
-      for (let index = 1; index < this.tableRows.length; index++) {
-        const hour: string = this.clearHour(
-          this.tableRows[index].childNodes[0].textContent
-        );
-        if (hour == schedule.start) {
-          this.selectDay(schedule, index);
-          break;
-        }
-      }
+  isThereContent = (indexHour: number, day: string) => {
+    let isThere: boolean = false;
+    this.subjectMatters.forEach(subjectMatter => {
+      subjectMatter.schedules.forEach(schedule => {
+        if (
+          this.compareDay(day, schedule.day) &&
+          this.compareHour(indexHour, schedule.start)
+        )
+          isThere = true;
+      });
     });
-  }
+    return isThere;
+  };
 
-  insertSchedule(schedule: ScheduleItem, rowIndex: number, columIndex: number) {
-    this.tableRows[rowIndex].childNodes[
-      columIndex
-    ].innerHTML = `<span>${schedule.room}<span/>`;
-    this.tableRows[rowIndex].childNodes[columIndex].classList.add(
-      `selected${this.indexColor}`
-    );
-    this.tableRows[rowIndex].childNodes[
-      columIndex
-    ].style.background = this.colors[this.indexColor];
-  }
-
-  selectDay(schedule: ScheduleItem, rowIndex: number) {
-    for (let columIndex = 1; columIndex < this.days.length; columIndex++) {
-      if (schedule.day === this.days[columIndex].slice(0, 2).toUpperCase())
-        this.insertSchedule(schedule, rowIndex, columIndex);
-    }
-  }
-
-  stripContent() {
-    const selecteds: any = document.querySelectorAll(
-      `.selected${this.indexColor}`
-    );
-    selecteds.forEach((selected: any) => {
-      selected.removeChild(selected.firstChild);
-      selected.classList.remove(`selected${this.indexColor}`);
-      selected.style.background = "none";
+  getContend = (indexHour: number, day: string) => {
+    let scheduleItems: scheduleCell[] = [];
+    this.subjectMatters.forEach((subjectMatter, indexOne) => {
+      subjectMatter.schedules.forEach(schedule => {
+        if (
+          this.compareDay(day, schedule.day) &&
+          this.compareHour(indexHour, schedule.start)
+        )
+          scheduleItems.push({
+            color: this.colors.getColor(indexOne),
+            subjectName: subjectMatter.subjectName,
+            room: schedule.room,
+            groupCode: subjectMatter.groupCode,
+            times: schedule.duration
+          });
+      });
     });
-  }
+    return scheduleItems;
+  };
 }
 </script>
 
 <style lang="scss">
 @import "@/scss/abstracts/_variables.scss";
 .table {
-  background-color: #f1f9ff;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 5rem;
-
-  @media (max-width: $small) {
-    padding: 5rem 0;
-  }
+  padding-right: 1rem;
+  padding-bottom: 2rem;
 
   table {
     border-collapse: collapse;
-    width: 100%;
+    // width: 100%;
     overflow-x: scroll;
-    display: table;
-
-    @media (max-width: $small) {
-      display: block;
-    }
-  }
-
-  tr,
-  th {
-    border: 1px solid $primary_color;
-  }
-
-  tr:first-child,
-  th:first-child {
-    background-color: $primary_color;
-    border: none;
-    padding: 1.4rem 0;
-    span {
-      color: white;
-    }
   }
 
   &_days {
-    th {
-      padding: 1rem;
+    border: 1px solid #7cbbee;
+
+    background-color: $white;
+    width: 100px;
+    height: 50px;
+  }
+
+  td {
+    border: 1px solid #7cbbee;
+    &:first-child {
       border: none;
-      border-left: 1px solid $primary_color;
-      border-right: 1px solid $primary_color;
+    }
+  }
+
+  tr {
+    td:not(:first-child) {
+      background-color: $white;
+    }
+  }
+
+  &_hours {
+    height: 30px;
+    text-align: end;
+    span {
+      position: relative;
+      top: -50%;
+      padding-right: 1rem;
+    }
+
+    &:last-child {
+      height: 0.1px;
+      span {
+        top: -10000%;
+      }
     }
   }
 }

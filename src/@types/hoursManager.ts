@@ -1,3 +1,4 @@
+import { ScheduleItem } from '@/@types/scheduleItem'
 class hoursManager {
     // data: string[] = ['645', '815', '945', '1115', '1245', '1415', '1545', '1715', '1845', '2015', '2145']
 
@@ -27,24 +28,24 @@ class hoursManager {
 
     getData = () => this.data.slice(0, -1)
 
+    getValue = (index: number) => this.data[index]
+
     dataForHTML = () => {
-        //del schedule2
         let newData: string[] = []
-        for (let element of this.data) {
-            if (element === this.data[this.data.length - 1]) break
+        for (let element of this.getData()) {
             newData.push(this.convert(element))
         }
         return newData
     }
 
-    convert = (hour: string) => {
+    convert = (hour: string): string => {
         //del schedule2
         const cut = hour.length > 3 ? 2 : 1
         return hour.slice(0, cut) + ':' + hour.slice(-2)
     }
 
-    //del schedule3
-    getTimes = (start: string, end: string) => this.data.filter((hour) => start < hour && end >= hour).length
+    inRange = (start: string, end: string, indexHour: number): boolean =>
+        start > this.getValue(indexHour) && end <= this.getValue(indexHour)
 }
 
 export default hoursManager
