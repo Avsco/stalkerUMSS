@@ -1,18 +1,27 @@
-import { GetterTree, ActionTree, MutationTree } from 'vuex'
+import { ActionContext } from 'vuex'
 
-interface IState {}
+interface IState {
+    example: string
+}
 
-const state = (): IState => ({})
+const state: IState = {
+    example: ''
+}
 
-type RootState = ReturnType<typeof state>
+const getters = {
+    example: (state: IState) => state.example
+}
 
-const getters: GetterTree<RootState, RootState> = {}
+const mutations = {
+    example: (state: IState, payload: string) => (state.example = payload)
+}
 
-const mutations: MutationTree<RootState> = {}
-
-const actions: ActionTree<RootState, RootState> = {}
+const actions = {
+    example: ({ commit, dispatch }: ActionContext<any, any>, example: string) => {}
+}
 
 export default {
+    namespaced: true,
     state,
     getters,
     mutations,
