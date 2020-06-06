@@ -12,19 +12,19 @@ export interface IState {
 
 const state = (): IState => ({
     carrer: [],
-    carrers: [],
+    carrers: []
 })
 
 type TypeState = ReturnType<typeof state>
 
 const getters: GetterTree<TypeState, TypeState> = {
     carrer: (state) => state.carrer,
-    carrers: (state) => state.carrers,
+    carrers: (state) => state.carrers
 }
 
 const mutations: MutationTree<TypeState> = {
     mutationCarrer: (state, payload: completeCarrer[]) => (state.carrer = payload),
-    mutationCarrers: (state, payload: basicCarrer[]) => (state.carrers = payload),
+    mutationCarrers: (state, payload: basicCarrer[]) => (state.carrers = payload)
 }
 
 //TODO probar que funciona
@@ -35,7 +35,7 @@ const actions: ActionTree<TypeState, TypeState> = {
             const carrers: basicCarrer[] = data.map((carrer: any) => {
                 return {
                     code: carrer.code,
-                    name: carrer.name,
+                    name: carrer.name
                 }
             })
 
@@ -54,17 +54,17 @@ const actions: ActionTree<TypeState, TypeState> = {
                 completeCarrer.push({
                     code: level.code,
                     subjets: [],
-                    active: [],
+                    active: []
                 })
                 level.subjects.forEach((subject: any, indexTwo: number) => {
                     completeCarrer[indexOne].subjets.push({
                         name: subject.name,
-                        groups: [],
+                        groups: []
                     })
                     subject.groups.forEach((group: any) => {
                         completeCarrer[indexOne].subjets[indexTwo].groups.push({
                             code: group.code,
-                            teacher: group.teacher,
+                            teacher: group.teacher
                         })
                     })
                 })
@@ -74,13 +74,13 @@ const actions: ActionTree<TypeState, TypeState> = {
             console.error(error)
             commit('mutationCarrer', [])
         }
-    },
+    }
 }
 
 export default {
-    namespaced: true,
+    //   namespaced: true,
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

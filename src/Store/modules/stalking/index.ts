@@ -1,4 +1,5 @@
-import { GetterTree, MutationTree, ActionTree } from 'vuex'
+import { ActionContext } from 'vuex'
+
 import axios from 'axios'
 
 import { getCarrers } from '@/services/carrer'
@@ -7,45 +8,40 @@ import { concatUrl } from '@/@types/url'
 import { ScheduleItem } from '@/@types/scheduleItem'
 import { subjectMatter, subjectMatters } from '@/@types/subjectMatter'
 
-export interface IState {
+interface IState {
     nameTeacher: string
     schedulesTeacher: subjectMatter[]
     allTeachers: string[]
 }
 
-const state = (): IState => ({
+const state: IState = {
     nameTeacher: '',
     schedulesTeacher: [],
-    allTeachers: [],
-})
-
-type TypeState = ReturnType<typeof state>
-
-const getters: GetterTree<TypeState, TypeState> = {
-    nameTeacher: (state) => state.nameTeacher,
-    schedulesTeacher: (state) => state.schedulesTeacher,
-    allTeachers: (state) => state.allTeachers,
+    allTeachers: []
 }
 
-const mutations: MutationTree<TypeState> = {
-    mutationTeacher: (state, payload: string) => (state.nameTeacher = payload),
-    mutationSchedules: (state, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
-    mutationAllTeachers: (state, payload: string[]) => (state.allTeachers = payload),
+const getters = {
+    nameTeacher: (state: IState) => state.nameTeacher,
+    schedulesTeacher: (state: IState) => state.schedulesTeacher,
+    allTeachers: (state: IState) => state.allTeachers
 }
 
-const actions: ActionTree<TypeState, TypeState> = {
-    actionSearch: ({ commit, dispatch }, nameTeacher) => {
+const mutations = {
+    mutationTeacher: (state: IState, payload: string) => (state.nameTeacher = payload),
+    mutationSchedules: (state: IState, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
+    mutationAllTeachers: (state: IState, payload: string[]) => (state.allTeachers = payload)
+}
+
+const actions = {
+    actionSearch: ({ commit, dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         commit('mutationTeacher', nameTeacher)
         dispatch('actionGetCodes', nameTeacher)
     },
-
-    actionGetScheludes: async ({ commit }, { nameTeacher, codeCarrers }) => {
+    actionGetScheludes: async ({ commit }: ActionContext<any, any>, { nameTeacher, codeCarrers }: { nameTeacher: string; codeCarrers: string[] }) => {
         try {
             let schedulesMatter: subjectMatters = new subjectMatters()
-
             codeCarrers.forEach(async (code: string) => {
                 const { data } = await axios.get(concatUrl(code))
-
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
                         subject.groups.forEach((group: any) => {
@@ -58,7 +54,7 @@ const actions: ActionTree<TypeState, TypeState> = {
                             schedulesMatter.add({
                                 subjectName: subject.name,
                                 groupCode: group.code,
-                                schedules: schedules,
+                                schedules: schedules
                             })
                         })
                     })
@@ -70,22 +66,19 @@ const actions: ActionTree<TypeState, TypeState> = {
             commit('mutationSchedules', [])
         }
     },
-
-    actionGetCodes: async ({ dispatch }, nameTeacher) => {
+    actionGetCodes: async ({ dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         try {
             const codeCarrers: string[] = (await getCarrers()).map((carrer: any) => carrer.code)
             dispatch('actionGetScheludes', {
                 nameTeacher: nameTeacher,
-                codeCarrers: codeCarrers,
+                codeCarrers: codeCarrers
             })
         } catch (error) {
             console.error(error)
             dispatch('actionGetScheludes', [])
         }
     },
-
-    //TODO sobre lo como hacer que get Codes sea algo mas global y accesible
-    actionGetAllTeachers: async ({ commit }) => {},
+    actionGetAllTeachers: async ({ commit }: ActionContext<any, any>) => {}
 }
 
 export default {
@@ -93,5 +86,5 @@ export default {
     state,
     getters,
     mutations,
-    actions,
+    actions
 }

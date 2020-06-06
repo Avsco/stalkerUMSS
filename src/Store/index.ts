@@ -3,12 +3,12 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import stalking from './stalking'
-import capucchino from './capucchino'
+import capucchino from './modules/capucchino'
+import stalking from './modules/stalking'
 
 export default new Vuex.Store({
     modules: {
-        obj1: stalking,
-        // obj2: capucchino,
-    },
+        capucchino,
+        stalking
+    }
 })
