@@ -2,43 +2,38 @@ import { ActionContext } from 'vuex'
 
 import axios from 'axios'
 
-import { getCarrers } from '@/services/carrer'
-import { concatUrl } from '@/@types/url'
+import { concatUrl, getUrl } from '@/@types/url'
 
 import { ScheduleItem } from '@/@types/scheduleItem'
 import { subjectMatter, subjectMatters } from '@/@types/subjectMatter'
 
 interface IState {
-    nameTeacher: string
     schedulesTeacher: subjectMatter[]
     allTeachers: string[]
 }
 
 const state: IState = {
-    nameTeacher: '',
     schedulesTeacher: [],
     allTeachers: []
 }
 
 const getters = {
-    nameTeacher: (state: IState) => state.nameTeacher,
     schedulesTeacher: (state: IState) => state.schedulesTeacher,
     allTeachers: (state: IState) => state.allTeachers
 }
 
 const mutations = {
-    mutationTeacher: (state: IState, payload: string) => (state.nameTeacher = payload),
     mutationSchedules: (state: IState, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
     mutationAllTeachers: (state: IState, payload: string[]) => (state.allTeachers = payload)
 }
 
 const actions = {
-    actionSearch: ({ commit, dispatch }: ActionContext<any, any>, nameTeacher: string) => {
-        commit('mutationTeacher', nameTeacher)
-        dispatch('actionGetCodes', nameTeacher)
+    actionSearch: ({ dispatch }: ActionContext<any, any>, nameTeacher: string) => {
+        dispatch('actionGetScheludes', nameTeacher)
     },
-    actionGetScheludes: async ({ commit }: ActionContext<any, any>, { nameTeacher, codeCarrers }: { nameTeacher: string; codeCarrers: string[] }) => {
+    actionGetScheludes: async ({ commit, dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         try {
+            const codeCarrers = await dispatch('actionGetCodes')
             let schedulesMatter: subjectMatters = new subjectMatters()
             codeCarrers.forEach(async (code: string) => {
                 const { data } = await axios.get(concatUrl(code))
@@ -66,19 +61,54 @@ const actions = {
             commit('mutationSchedules', [])
         }
     },
-    actionGetCodes: async ({ dispatch }: ActionContext<any, any>, nameTeacher: string) => {
+    actionGetCodes: async ({}: ActionContext<any, any>) => {
         try {
-            const codeCarrers: string[] = (await getCarrers()).map((carrer: any) => carrer.code)
-            dispatch('actionGetScheludes', {
-                nameTeacher: nameTeacher,
-                codeCarrers: codeCarrers
-            })
+            const { data } = await axios.get(getUrl())
+            return data.map((carrer: any) => carrer.code)
         } catch (error) {
             console.error(error)
-            dispatch('actionGetScheludes', [])
+            return []
         }
     },
-    actionGetAllTeachers: async ({ commit }: ActionContext<any, any>) => {}
+    actionGetAllTeachers: async ({ dispatch, commit }: ActionContext<any, any>) => {
+        try {
+            const codeCarrers = await dispatch('actionGetCodes')
+
+            let teachers: string[] = []
+
+            for (const code of codeCarrers) {
+                const teachersOfCarrer = await dispatch('actionGetTeachersForCarrer', code)
+                teachers.push(...teachersOfCarrer)
+            }
+
+            const filter = new Set(teachers)
+            teachers = [...filter]
+
+            commit('mutationAllTeachers', teachers)
+        } catch (error) {
+            console.error(error)
+            commit('mutationAllTeachers', [])
+        }
+    },
+
+    actionGetTeachersForCarrer: async ({}: ActionContext<any, any>, carrerCode: string) => {
+        try {
+            let teachers: string[] = []
+            const { data } = await axios.get(concatUrl(carrerCode))
+            data.levels.forEach((level: any) => {
+                level.subjects.forEach((subject: any) => {
+                    subject.groups.forEach((group: any) => {
+                        group.schedule.forEach((schedule: any) => teachers.push(schedule.teacher))
+                    })
+                })
+            })
+
+            return teachers
+        } catch (error) {
+            console.error(error)
+            return []
+        }
+    }
 }
 
 export default {

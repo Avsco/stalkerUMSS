@@ -13,11 +13,11 @@ const getters = {
 }
 
 const mutations = {
-    example: (state: IState, payload: string) => (state.example = payload)
+    mutationExample: (state: IState, payload: string) => (state.example = payload)
 }
 
 const actions = {
-    example: ({ commit, dispatch }: ActionContext<any, any>, example: string) => {}
+    acionExample: ({ commit, dispatch }: ActionContext<any, any>, example: string) => {}
 }
 
 export default {

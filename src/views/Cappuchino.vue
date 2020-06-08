@@ -1,25 +1,25 @@
 <template>
-  <div class="cappuchino">
-    <Options />
-    <!-- <ScheduleTable :subjectMatters="[]" /> -->
-  </div>
+    <div class="cappuchino">
+        <Options />
+        <!-- <ScheduleTable :subjectMatters="[]" /> -->
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator'
 
-import ScheduleTable from "@/components/tableSchedule/ScheduleTable.vue";
-import Options from "@/components/capucchino/Options.vue";
+import ScheduleTable from '@/components/tableSchedule/ScheduleTable.vue'
+import Options from '@/components/capucchino/Options/Index.vue'
 
 @Component({
-  components: {
-    ScheduleTable,
-    Options
-  }
+    components: {
+        ScheduleTable,
+        Options
+    }
 })
 export default class extends Vue {}
 </script>
 
 <style lang="scss">
-@import "@/scss/abstracts/_variables.scss";
+@import '@/scss/abstracts/_variables.scss';
 </style>

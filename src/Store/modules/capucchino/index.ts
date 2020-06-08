@@ -1,35 +1,33 @@
-import { GetterTree, MutationTree, ActionTree } from 'vuex'
+import { ActionContext } from 'vuex'
 
 import axios from 'axios'
 
 import { getUrl, concatUrl } from '@/@types/url'
 import { completeCarrer, basicCarrer } from '@/@types/cappuchino'
 
-export interface IState {
-    carrer: completeCarrer[]
+interface IState {
+    carrerSelected: completeCarrer[]
     carrers: basicCarrer[]
 }
 
-const state = (): IState => ({
-    carrer: [],
+const state: IState = {
+    carrerSelected: [],
     carrers: []
-})
-
-type TypeState = ReturnType<typeof state>
-
-const getters: GetterTree<TypeState, TypeState> = {
-    carrer: (state) => state.carrer,
-    carrers: (state) => state.carrers
 }
 
-const mutations: MutationTree<TypeState> = {
-    mutationCarrer: (state, payload: completeCarrer[]) => (state.carrer = payload),
-    mutationCarrers: (state, payload: basicCarrer[]) => (state.carrers = payload)
+const getters = {
+    carrerSelected: (state: IState) => state.carrerSelected,
+    carrers: (state: IState) => state.carrers
+}
+
+const mutations = {
+    mutationCarrerSelected: (state: IState, payload: completeCarrer[]) => (state.carrerSelected = payload),
+    mutationCarrers: (state: IState, payload: basicCarrer[]) => (state.carrers = payload)
 }
 
 //TODO probar que funciona
-const actions: ActionTree<TypeState, TypeState> = {
-    acitonGetCarrers: async ({ commit }) => {
+const actions = {
+    acitonGetCarrers: async ({ commit }: ActionContext<any, any>) => {
         try {
             const { data } = await axios.get(getUrl())
             const carrers: basicCarrer[] = data.map((carrer: any) => {
@@ -46,39 +44,39 @@ const actions: ActionTree<TypeState, TypeState> = {
         }
     },
 
-    acitonGetCarrer: async ({ commit }, urlCarrer) => {
+    actionGetCarrerSelected: async ({ commit }: ActionContext<any, any>, urlCarrer: string) => {
         try {
             const { data } = await axios.get(concatUrl(urlCarrer))
-            let completeCarrer: completeCarrer[] = []
+            let levelsInCarrer: completeCarrer[] = []
             data.levels.forEach((level: any, indexOne: number) => {
-                completeCarrer.push({
+                levelsInCarrer.push({
                     code: level.code,
-                    subjets: [],
-                    active: []
+                    subjets: []
                 })
                 level.subjects.forEach((subject: any, indexTwo: number) => {
-                    completeCarrer[indexOne].subjets.push({
+                    levelsInCarrer[indexOne].subjets.push({
                         name: subject.name,
                         groups: []
                     })
                     subject.groups.forEach((group: any) => {
-                        completeCarrer[indexOne].subjets[indexTwo].groups.push({
+                        levelsInCarrer[indexOne].subjets[indexTwo].groups.push({
                             code: group.code,
                             teacher: group.teacher
                         })
                     })
                 })
             })
-            commit('mutationCarrer', completeCarrer)
+
+            commit('mutationCarrerSelected', levelsInCarrer)
         } catch (error) {
             console.error(error)
-            commit('mutationCarrer', [])
+            commit('mutationCarrerSelected', [])
         }
     }
 }
 
 export default {
-    //   namespaced: true,
+    namespaced: true,
     state,
     getters,
     mutations,

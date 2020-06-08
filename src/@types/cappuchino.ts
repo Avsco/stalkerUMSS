@@ -6,7 +6,6 @@ export interface basicCarrer {
 export interface completeCarrer {
     code: string
     subjets: subjets[]
-    active: number[]
 }
 
 interface subjets {
