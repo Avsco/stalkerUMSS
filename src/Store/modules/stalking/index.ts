@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import { concatUrl, getUrl } from '@/@types/url'
 
-import { ScheduleItem } from '@/@types/scheduleItem'
+import { ScheduleItem } from '@/@types/schedule'
 import { subjectMatter, subjectMatters } from '@/@types/subjectMatter'
 
 interface IState {

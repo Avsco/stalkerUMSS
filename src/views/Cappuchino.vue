@@ -8,8 +8,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import ScheduleTable from '@/components/tableSchedule/ScheduleTable.vue'
-import Options from '@/components/capucchino/Options/Index.vue'
+import ScheduleTable from '@/components/tableSchedule/index.vue'
+import Options from '@/components/capucchino/Options/index.vue'
 
 @Component({
     components: {

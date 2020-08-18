@@ -1,4 +1,3 @@
-import { ScheduleItem } from '@/@types/scheduleItem'
 class hoursManager {
     // data: string[] = ['645', '815', '945', '1115', '1245', '1415', '1545', '1715', '1845', '2015', '2145']
 
@@ -23,7 +22,7 @@ class hoursManager {
         '1930',
         '2015',
         '2100',
-        '2145',
+        '2145'
     ]
 
     getData = () => this.data.slice(0, -1)
@@ -44,8 +43,10 @@ class hoursManager {
         return hour.slice(0, cut) + ':' + hour.slice(-2)
     }
 
-    inRange = (start: string, end: string, indexHour: number): boolean =>
-        start > this.getValue(indexHour) && end <= this.getValue(indexHour)
+    inRange = (start: string, end: string, indexHourSchedule: number): boolean =>
+        start >= this.getValue(indexHourSchedule) && end <= this.getValue(indexHourSchedule)
+
+    compareHour = (indexHourSchedule: number, scheduleHour: string) => this.getValue(indexHourSchedule) == scheduleHour
 }
 
 export default hoursManager
