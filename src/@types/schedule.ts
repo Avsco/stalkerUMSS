@@ -1,16 +1,24 @@
 export interface scheduleCell {
     color: string
-    subjectName: string
-    room: string
     groupCode: string
-    times: number
+    duration: number
+    room: string
+    subjectName: string
+    day: string
+    start: string
+    end: string
 }
 
-export interface ScheduleItem {
+export interface scheduleItem {
     day: string
     start: string
     end: string
     duration: number
     room: string
     teacher: string
+}
+
+export interface schedulesByDay {
+    day: string
+    schedules: scheduleCell[]
 }

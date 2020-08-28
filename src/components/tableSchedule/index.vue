@@ -2,34 +2,26 @@
     <div class="table">
         <table>
             <tr>
-                <th
-                    v-for="(value, index) in days"
-                    :class="index == 0 ? '' : 'table_days'"
-                    :key="index"
-                >
+                <th v-for="(value, index) in days" :class="index == 0 ? '' : 'table_days'" :key="index">
                     <span>{{ value }}</span>
                 </th>
             </tr>
             <tr v-for="(valueOne, indexOne) in hours.dataForHTML()" :key="indexOne">
                 <template v-for="(valueTwo, indexTwo) in days">
                     <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
-                        <span>{{valueOne}}</span>
+                        <span>{{ valueOne }}</span>
                     </td>
                     <ScheduleTableItem
-                        v-else-if="isThereScheduleItem(indexOne, valueTwo)"
+                        v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
                         :key="indexTwo"
-                        :schedules="getScheduleItem(indexOne, valueTwo)"
+                        :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
                     />
-                    <td
-                        v-else-if="isThereScheduleOccupied(indexOne, indexTwo)"
-                        :key="indexTwo"
-                        class="table_cell"
-                    ></td>
+                    <td v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)" :key="indexTwo" class="table_cell"></td>
                 </template>
             </tr>
             <tr>
                 <td class="table_hours">
-                    <span>21:45</span>
+                    <span>{{ hours.convert(hours.getValue(hours.data.length - 1)) }}</span>
                 </td>
             </tr>
         </table>
@@ -42,69 +34,41 @@ import { Getter } from 'vuex-class'
 
 import ScheduleTableItem from './ScheduleTableItem.vue'
 
-import { subjectMatter } from '@/@types/subjectMatter'
-import colorManager from '@/@types/colorManager'
-import hoursManager from '@/@types/hoursManager'
-import { scheduleCell, ScheduleItem } from '@/@types/schedule'
+import ColorManager from '@/classes/colorManager'
+import HoursManager from '@/classes/hoursManager'
+import SchedulesPerDays from '@/classes/schedulesPerDays'
+import { scheduleItem, scheduleCell, schedulesByDay } from '@/@types/schedule'
+import { subjectMatter } from '@/classes/subjectMatter'
 
 @Component({
     components: {
-        ScheduleTableItem,
-    },
+        ScheduleTableItem
+    }
 })
 export default class extends Vue {
     @Prop({ required: true }) subjectMatters!: subjectMatter[]
-    hours: hoursManager = new hoursManager()
-    colors: colorManager = new colorManager()
+    colors: ColorManager = new ColorManager()
     days: string[] = ['', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+    hours: HoursManager = new HoursManager()
+    schedulesPerDay: SchedulesPerDays = new SchedulesPerDays(this.days, this.hours)
 
     @Watch('subjectMatters')
     onChildChanged() {
-        this.colors.watchColors(this.subjectMatters.length)
-    }
-
-    compareDay = (day: string, scheduleDay: string): boolean => day.slice(0, 2).toUpperCase() === scheduleDay
-
-    isThereScheduleItem = (indexHourSchedule: number, day: string): boolean => {
-        let isThere: boolean = false
-        this.subjectMatters.forEach((subjectMatter) => {
-            subjectMatter.schedules.forEach((schedule: ScheduleItem) => {
-                if (this.compareDay(day, schedule.day) && this.hours.compareHour(indexHourSchedule, schedule.start)) isThere = true
+        this.schedulesPerDay.dropSchedules()
+        this.subjectMatters.forEach((subjectMatter: subjectMatter, index) => {
+            subjectMatter.schedules.forEach((schedule: scheduleItem) => {
+                this.schedulesPerDay.addSchedule({
+                    color: this.colors.getColor(index),
+                    groupCode: subjectMatter.groupCode,
+                    duration: schedule.duration,
+                    room: schedule.room,
+                    subjectName: subjectMatter.subjectName,
+                    day: schedule.day,
+                    start: schedule.start,
+                    end: schedule.end
+                })
             })
         })
-        return isThere
-    }
-
-    getScheduleItem = (indexHourSchedule: number, day: string): scheduleCell[] => {
-        let scheduleItems: scheduleCell[] = []
-        this.subjectMatters.forEach((subjectMatter, indexOne) => {
-            subjectMatter.schedules.forEach((schedule: ScheduleItem) => {
-                if (this.compareDay(day, schedule.day) && this.hours.compareHour(indexHourSchedule, schedule.start)) {
-                    scheduleItems.push({
-                        color: this.colors.getColor(indexOne),
-                        subjectName: subjectMatter.subjectName,
-                        room: schedule.room,
-                        groupCode: subjectMatter.groupCode,
-                        times: schedule.duration,
-                    })
-                }
-            })
-        })
-        return scheduleItems
-    }
-
-    isThereScheduleOccupied = (indexHourSchedule: number, indexDay: number): boolean => {
-        let isInRange = false
-        this.subjectMatters.forEach((subjectMatter, indexOne) => {
-            subjectMatter.schedules.forEach((schedule: ScheduleItem) => {
-                if (this.compareDay(this.days[indexDay], schedule.day) && this.hours.compareHour(indexHourSchedule - 1, schedule.start)) {
-                    isInRange = true
-                    console.log(this.days[indexDay])
-                    console.log(this.hours.getValue(indexHourSchedule))
-                }
-            })
-        })
-        return !isInRange
     }
 }
 </script>
@@ -115,7 +79,7 @@ export default class extends Vue {
     padding-bottom: 40px;
 
     table {
-        margin: auto;
+        margin: none;
         border-collapse: collapse;
     }
 

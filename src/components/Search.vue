@@ -83,6 +83,7 @@ export default class extends Vue {
         position: relative;
         left: 20%;
         flex-grow: 1;
+        z-index: 10;
         input[type='text'] {
             border: 1px solid $primary_color;
             padding: 0 1rem;

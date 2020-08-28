@@ -1,9 +1,9 @@
-import { ScheduleItem } from './schedule'
+import { scheduleItem } from '../@types/schedule'
 
 export interface subjectMatter {
     subjectName: string
     groupCode: string
-    schedules: ScheduleItem[]
+    schedules: scheduleItem[]
 }
 
 export class subjectMatters {

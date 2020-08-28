@@ -1,19 +1,12 @@
 <template>
-    <!-- <div v-html="InsertItems()"></div> -->
     <td
-        :class=" 'schedule' + (schedules.length > 1 ? ' schedule_error' : '')"
-        :rowspan="(schedules.length == 1 ? schedules[0].times : 1)"
+        :class="'schedule' + (schedules.length > 1 ? ' schedule_error' : '')"
+        :rowspan="schedules[0].duration"
+        :style="this.schedules.length == 1 ? 'background-color:' + color : ''"
     >
-        <div>
-            <div
-                v-for="(value, index) in schedules"
-                :key="index"
-                :style="schedules.length == 1 ? `background-color: ${value.color};` : ''"
-            >
-                <div>{{value.subjectName}}</div>
-                <div>({{value.room}})</div>
-                <!-- <div>{{value.times}}</div> -->
-            </div>
+        <div v-for="(value, index) in schedules" :key="index">
+            <div>{{ value.subjectName }}</div>
+            <div>({{ value.room }})</div>
         </div>
     </td>
 </template>
@@ -26,6 +19,11 @@ import { scheduleCell } from '@/@types/schedule'
 @Component({})
 export default class extends Vue {
     @Prop({ required: true }) schedules!: scheduleCell[]
+    color: string = ''
+
+    mounted() {
+        this.color = this.schedules.length == 1 ? this.schedules[0].color : ''
+    }
 }
 </script>
 
@@ -34,10 +32,10 @@ export default class extends Vue {
 
 .schedule {
     text-align: center;
-    height: 100%;
-    margin: 0;
+    margin: none;
+    padding: none;
     div {
-        font-size: 16px;
+        font-size: 1rem;
     }
 
     &_error {
@@ -45,6 +43,11 @@ export default class extends Vue {
             color: red;
             background-color: white;
         }
+    }
+
+    > div {
+        width: 100%;
+        height: 100%;
     }
 }
 </style>

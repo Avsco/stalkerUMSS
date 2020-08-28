@@ -4,8 +4,8 @@ import axios from 'axios'
 
 import { concatUrl, getUrl } from '@/@types/url'
 
-import { ScheduleItem } from '@/@types/schedule'
-import { subjectMatter, subjectMatters } from '@/@types/subjectMatter'
+import { scheduleItem } from '@/@types/schedule'
+import { subjectMatter, subjectMatters } from '@/classes/subjectMatter'
 
 interface IState {
     schedulesTeacher: subjectMatter[]
@@ -40,8 +40,8 @@ const actions = {
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
                         subject.groups.forEach((group: any) => {
-                            let schedules: ScheduleItem[] = []
-                            group.schedule.forEach((schedule: ScheduleItem) => {
+                            let schedules: scheduleItem[] = []
+                            group.schedule.forEach((schedule: scheduleItem) => {
                                 if (schedule.teacher === nameTeacher) {
                                     schedules.push(schedule)
                                 }
