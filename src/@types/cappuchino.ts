@@ -1,19 +1,27 @@
+import { scheduleItem } from './schedule'
+
 export interface basicCarrer {
     name: string
     code: string
 }
 
-export interface completeCarrer {
-    code: string
-    subjets: subjets[]
-}
-
-interface subjets {
+export interface carrer {
     name: string
-    groups: groups[]
+    levels: level[]
 }
 
-interface groups {
+interface level {
+    code: string
+    subjects: subjet[]
+}
+
+interface subjet {
+    name: string
+    groups: group[]
+}
+
+interface group {
     code: string
     teacher: string
+    schedules: scheduleItem[]
 }

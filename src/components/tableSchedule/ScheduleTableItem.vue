@@ -31,6 +31,7 @@ export default class extends Vue {
 @import '@/scss/abstracts/_variables.scss';
 
 .schedule {
+    border: 1px solid #7cbbee;
     text-align: center;
     margin: none;
     padding: none;
@@ -39,15 +40,10 @@ export default class extends Vue {
     }
 
     &_error {
+        background-color: white;
         div {
             color: red;
-            background-color: white;
         }
-    }
-
-    > div {
-        width: 100%;
-        height: 100%;
     }
 }
 </style>

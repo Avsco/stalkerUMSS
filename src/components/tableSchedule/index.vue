@@ -1,30 +1,40 @@
 <template>
     <div class="table">
-        <table>
-            <tr>
-                <th v-for="(value, index) in days" :class="index == 0 ? '' : 'table_days'" :key="index">
-                    <span>{{ value }}</span>
-                </th>
-            </tr>
-            <tr v-for="(valueOne, indexOne) in hours.dataForHTML()" :key="indexOne">
-                <template v-for="(valueTwo, indexTwo) in days">
-                    <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
-                        <span>{{ valueOne }}</span>
+        <div>
+            <table>
+                <tr>
+                    <th
+                        v-for="(value, index) in days"
+                        :class="index == 0 ? '' : 'table_days'"
+                        :key="index"
+                    >
+                        <span>{{ value }}</span>
+                    </th>
+                </tr>
+                <tr v-for="(valueOne, indexOne) in hours.dataForHTML()" :key="indexOne">
+                    <template v-for="(valueTwo, indexTwo) in days">
+                        <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
+                            <span>{{ valueOne }}</span>
+                        </td>
+                        <ScheduleTableItem
+                            v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
+                            :key="indexTwo"
+                            :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
+                        />
+                        <td
+                            v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)"
+                            :key="indexTwo"
+                            class="table_cell"
+                        ></td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="table_hours">
+                        <span>{{ hours.convert(hours.getValue(hours.data.length - 1)) }}</span>
                     </td>
-                    <ScheduleTableItem
-                        v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
-                        :key="indexTwo"
-                        :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
-                    />
-                    <td v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)" :key="indexTwo" class="table_cell"></td>
-                </template>
-            </tr>
-            <tr>
-                <td class="table_hours">
-                    <span>{{ hours.convert(hours.getValue(hours.data.length - 1)) }}</span>
-                </td>
-            </tr>
-        </table>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -42,8 +52,8 @@ import { subjectMatter } from '@/classes/subjectMatter'
 
 @Component({
     components: {
-        ScheduleTableItem
-    }
+        ScheduleTableItem,
+    },
 })
 export default class extends Vue {
     @Prop({ required: true }) subjectMatters!: subjectMatter[]
@@ -65,7 +75,7 @@ export default class extends Vue {
                     subjectName: subjectMatter.subjectName,
                     day: schedule.day,
                     start: schedule.start,
-                    end: schedule.end
+                    end: schedule.end,
                 })
             })
         })
@@ -76,11 +86,12 @@ export default class extends Vue {
 <style lang="scss">
 @import '@/scss/abstracts/_variables.scss';
 .table {
-    padding-bottom: 40px;
+    overflow-x: scroll;
 
     table {
-        margin: none;
         border-collapse: collapse;
+        table-layout: fixed;
+        padding-bottom: 40px;
     }
 
     &_days {
@@ -88,24 +99,12 @@ export default class extends Vue {
         background-color: $white;
         height: 50px;
         width: 100px;
-    }
-
-    td {
-        border: 1px solid #7cbbee;
-        &:first-child {
-            border: none;
-            padding-left: 5px;
-        }
-    }
-
-    tr {
-        td:not(:first-child) {
-            background-color: $white;
-        }
+        word-wrap: break-word;
     }
 
     &_hours {
         height: 30px;
+        width: 1rem;
         text-align: end;
         span {
             position: relative;
@@ -114,8 +113,9 @@ export default class extends Vue {
         }
     }
 
-    th:first-child {
-        width: 1rem;
+    &_cell {
+        background-color: $white;
+        border: 1px solid #7cbbee;
     }
 }
 </style>

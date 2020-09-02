@@ -20,8 +20,8 @@ import { scheduleItem } from '@/@types/schedule'
 @Component({
     components: {
         Search,
-        ScheduleTable
-    }
+        ScheduleTable,
+    },
 })
 export default class extends Vue {
     @Getter('stalking/schedulesTeacher') readonly schedules!: scheduleItem[]
@@ -44,6 +44,13 @@ export default class extends Vue {
         text-align: center;
         font-size: 2rem;
         margin-bottom: 4rem;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     // > div {
