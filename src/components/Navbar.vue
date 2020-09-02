@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar">
         <router-link class="navbar_linkmain" to="/">
-            <h2>Docent Stalking</h2>
+            <h2>EN DESARROLLO</h2>
         </router-link>
     </nav>
 </template>

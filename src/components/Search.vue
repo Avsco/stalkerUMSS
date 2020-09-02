@@ -2,11 +2,20 @@
     <div class="search">
         <div class="search_search">
             <div class="search_suggestions">
-                <input type="text" @input="verifyTeacher($event)" autofocus v-model="inputSearch" :spellcheck="false" />
+                <input
+                    type="text"
+                    @input="verifyTeacher($event)"
+                    autofocus
+                    v-model="inputSearch"
+                    :spellcheck="false"
+                />
                 <ul>
-                    <li :key="index" class="search_selectTeacher" v-for="(value, index) in Search.slice(0, 6)" @click="fillInput(value), search()">
-                        {{ value }}
-                    </li>
+                    <li
+                        :key="index"
+                        class="search_selectTeacher"
+                        v-for="(value, index) in Search.slice(0, 6)"
+                        @click="fillInput(value), search()"
+                    >{{ value }}</li>
                 </ul>
             </div>
             <button @click="search()">Buscar</button>
@@ -71,7 +80,7 @@ export default class extends Vue {
             align-items: center;
             button {
                 margin-left: none;
-                z-index: -1;
+                z-index: 1;
                 margin-top: 2rem;
                 left: -5%;
                 right: 0;
