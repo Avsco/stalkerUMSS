@@ -1,11 +1,10 @@
 <template>
-    <div class="stalker">
-        <p class="stalker_text">Prueba buscando a un docente!</p>
-        <div>
-            <Search :content="teachers" dispatchTo="stalking/actionSearch" />
+    <section class="stalker">
+        <div class="stalker_container">
+            <Search class="stalker_search" :content="teachers" dispatchTo="stalking/actionSearch" />
             <ScheduleTable :subjectMatters="schedules" />
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts">
@@ -34,28 +33,27 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
+@import '@/scss/abstracts/variables.scss';
+@import '@/scss/abstracts/mixins';
+
 .stalker {
     padding-top: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    background-color: #f1f9ff;
+    padding: 2rem;
 
-    &_text {
-        text-align: center;
-        font-size: 2rem;
-        margin-bottom: 4rem;
+    &_container {
+        display: grid;
+        gap: 3rem;
     }
 
-    > div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+    @include for-desktop-up {
+        &_search {
+            align-self: start;
+        }
 
-    // > div {
-    //     display: grid;
-    //     grid-template-columns: 0.5fr 1fr;
-    // }
+        &_container {
+            display: grid;
+            grid-template-columns: 0.5fr 1fr;
+        }
+    }
 }
 </style>

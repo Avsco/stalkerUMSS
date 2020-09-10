@@ -13,24 +13,29 @@ export default class extends Vue {}
 </script>
 
 <style lang="scss">
-@import '@/scss/abstracts/_variables.scss';
+@import '@/scss/abstracts/variables.scss';
+@import '@/scss/abstracts/mixins.scss';
+
 .delete {
-    height: 84.9vh;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     &_button {
         display: block;
         background-color: $primary_color;
-        margin-left: 2rem;
-        color: $white;
+        margin: 1rem;
+        color: $font_color;
         text-decoration: none;
         text-align: center;
-        padding: 2rem;
+        padding: 1rem;
         font-size: 2rem;
         text-transform: capitalize;
+    }
+
+    @include for-desktop-up {
+        flex-direction: row;
     }
 }
 </style>

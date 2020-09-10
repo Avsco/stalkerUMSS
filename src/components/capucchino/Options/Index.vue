@@ -1,6 +1,5 @@
 <template>
-    <div class="options">
-        <div style="text-align: center; padding: 2.4rem; background-color: white;">SEARCH</div>
+    <aside class="options">
         <div v-for="(valueOne, indexOne) in carrers" :key="indexOne">
             <div class="options_nameCarrer" @click="showCarrer(indexOne, valueOne)">
                 <span>{{ valueOne.name | simplifyCareers | capitalize }}</span>
@@ -12,8 +11,7 @@
                     v-for="(valueTwo, indexTwo) in carrerActive.levels"
                     :key="indexTwo"
                 >
-                    <span @click="dropLevel(indexTwo)">{{levels.get(valueTwo.code)}}</span>
-                    <!-- <pre>{{valueTwo}}</pre> -->
+                    <span @click="dropLevel(indexTwo)">{{ levels.get(valueTwo.code) }}</span>
                     <div
                         class="options_subject"
                         v-show="activeLevels.includes(indexTwo)"
@@ -21,7 +19,7 @@
                         :key="indexThree"
                     >
                         <div>
-                            <span>{{valueThree.name | capitalize }}</span>
+                            <span>{{ valueThree.name | capitalize }}</span>
                             <span>Grupo</span>
                         </div>
                         <div
@@ -33,13 +31,13 @@
                                 <span>
                                     <input
                                         type="checkbox"
-                                        :id="'group'+ indexTwo + indexThree + indexFour"
+                                        :id="'group' + indexTwo + indexThree + indexFour"
                                         :value="getSubjectMatter(indexTwo, indexThree, indexFour)"
                                         v-model="subjectsMatter"
                                     />
-                                    {{valueFour.teacher | capitalizeName}}
+                                    {{ valueFour.teacher | capitalizeName }}
                                 </span>
-                                <span>{{valueFour.code}}</span>
+                                <span>{{ valueFour.code }}</span>
                             </label>
                         </div>
                     </div>
@@ -47,7 +45,7 @@
             </div>
         </div>
         <div class="options_footer">SCESI 2020</div>
-    </div>
+    </aside>
 </template>
 
 <script lang="ts">
@@ -55,16 +53,17 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
 import { basicCarrer, carrer } from '@/@types/cappuchino'
-import { scheduleCell } from '@/@types/schedule'
+
 import { subjectMatter } from '@/classes/subjectMatter'
+import LevelHash from '@/classes/levelsHash'
 
 @Component({})
 export default class extends Vue {
     @Getter('capucchino/carrers') readonly carrers!: basicCarrer[]
+    @Getter('capucchino/carrerSelected') readonly carrerActive!: carrer
     IndexCarrerActive: number = -1
     activeLevels: number[] = []
-    @Getter('capucchino/carrerSelected') readonly carrerActive!: carrer
-    levels: Map<string, string> = new Map()
+    levels: LevelHash = new LevelHash()
     subjectsMatter: subjectMatter[] = []
 
     @Watch('IndexCarrerActive')
@@ -78,7 +77,6 @@ export default class extends Vue {
     }
 
     async mounted() {
-        this.mountMap()
         this.$store.dispatch('capucchino/actionGetCarrers')
     }
 
@@ -86,19 +84,6 @@ export default class extends Vue {
         this.$store.dispatch('capucchino/actionGetCarrerSelected', value.code)
         if (this.IndexCarrerActive != index) this.IndexCarrerActive = index
         else this.IndexCarrerActive = -1
-    }
-
-    mountMap() {
-        this.levels.set('A', 'Semestre 1')
-        this.levels.set('B', 'Semestre 2')
-        this.levels.set('C', 'Semestre 3')
-        this.levels.set('D', 'Semestre 4')
-        this.levels.set('E', 'Semestre 5')
-        this.levels.set('F', 'Semestre 6')
-        this.levels.set('G', 'Semestre 7')
-        this.levels.set('H', 'Semestre 8')
-        this.levels.set('I', 'Semestre 9')
-        this.levels.set('J', 'Semestre 10')
     }
 
     dropLevel(index: number) {
@@ -120,19 +105,18 @@ export default class extends Vue {
 @import '@/scss/abstracts/_variables.scss';
 
 .options {
-    border: 1px solid black;
+    border: 1px solid white;
+    border-radius: $border_radius;
+
     &_nameCarrer {
         padding: 1rem;
-        color: $white;
-        background-color: $primary-color;
+        background-color: $primary_color;
         display: flex;
         justify-content: space-between;
-        border: 1px solid black;
+        border: 1px solid white;
         cursor: pointer;
 
         span {
-            color: $white;
-            font-size: 1rem;
             font-weight: 700;
         }
     }
@@ -140,7 +124,7 @@ export default class extends Vue {
     &_level {
         padding: 10px;
         padding-left: 1.5rem;
-        border: 1px solid black;
+        border: 1px solid white;
     }
 
     &_subject {
@@ -149,7 +133,7 @@ export default class extends Vue {
         > div {
             display: flex;
             justify-content: space-between;
-            border: 1px solid black;
+            border: 1px solid white;
         }
     }
 
@@ -161,7 +145,7 @@ export default class extends Vue {
         }
 
         input:checked {
-            background-color: black;
+            background-color: white;
         }
 
         > label {

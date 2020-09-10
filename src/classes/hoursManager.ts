@@ -1,5 +1,5 @@
 class hoursManager {
-    data: string[] = [
+    private data: string[] = [
         '645',
         '730',
         '815',
@@ -28,6 +28,8 @@ class hoursManager {
     getValue = (index: number) => this.data[index]
 
     getIndex = (value: string) => this.data.indexOf(value)
+
+    getLenght = () => this.data.length
 
     dataForHTML = () => this.getData().map((data) => this.convert(data))
 

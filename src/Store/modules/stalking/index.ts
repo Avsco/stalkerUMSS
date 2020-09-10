@@ -11,7 +11,7 @@ interface IState {
     schedulesTeacher: subjectMatter[]
     allTeachers: string[]
 }
-
+//TODO: volver el allteahcer un SET()
 const state: IState = {
     schedulesTeacher: [],
     allTeachers: []
@@ -28,6 +28,7 @@ const mutations = {
 }
 
 const actions = {
+    //TODO: deshacerse de este metodo cuando el flujo de datos vuelva
     actionSearch: ({ dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         dispatch('actionGetScheludes', nameTeacher)
     },
@@ -61,7 +62,7 @@ const actions = {
             commit('mutationSchedules', [])
         }
     },
-    actionGetCodes: async ({}: ActionContext<any, any>) => {
+    actionGetCodes: async ({}: ActionContext<any, any>): Promise<string[]> => {
         try {
             const { data } = await axios.get(getUrl())
             return data.map((carrer: any) => carrer.code)
@@ -70,7 +71,7 @@ const actions = {
             return []
         }
     },
-    actionGetAllTeachers: async ({ dispatch, commit }: ActionContext<any, any>) => {
+    actionGetAllTeachers: async ({ dispatch, commit }: ActionContext<any, any>): Promise<void> => {
         try {
             const codeCarrers = await dispatch('actionGetCodes')
 
@@ -91,7 +92,7 @@ const actions = {
         }
     },
 
-    actionGetTeachersForCarrer: async ({}: ActionContext<any, any>, carrerCode: string) => {
+    actionGetTeachersForCarrer: async ({}: ActionContext<any, any>, carrerCode: string): Promise<string[]> => {
         try {
             let teachers: string[] = []
             const { data } = await axios.get(concatUrl(carrerCode))
@@ -108,6 +109,17 @@ const actions = {
             console.error(error)
             return []
         }
+
+        //TODO: ver si el flujo de datos esta bien
+        // try {
+        //     const { data } = await axios.get(concatUrl(carrerCode))
+        //     return data.levels.map((level: any) =>
+        //         level.subjects.map((subject: any) => subject.groups.map((group: any) => group.schedule.map((schedule: any) => schedule.teacher)))
+        //     )
+        // } catch (error) {
+        //     console.error(error)
+        //     return []
+        // }
     }
 }
 

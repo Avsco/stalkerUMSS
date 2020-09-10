@@ -1,51 +1,12 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: Roboto;
-    font-size: 16px;
-    font-weight: 400;
-    color: $black;
-    box-sizing: border-box;
-}
-
 body {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+    color: $font_color;
+    background-color: $background_color;
 }
 
-img {
-    display: block;
-}
-
-input,
-select,
-textarea,
-button {
-    appearance: none;
-    outline: none;
-    border: none;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-}
-
-input,
-select {
-    height: 40px;
-    border: 1px solid darken($white, 10);
-}
-
-select,
-button {
-    cursor: pointer;
-}
-
-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+input:focus {
+    outline: none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
 }

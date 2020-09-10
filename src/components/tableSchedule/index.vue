@@ -1,16 +1,18 @@
 <template>
     <div class="table">
-        <div>
-            <table>
+        <table>
+            <thead>
                 <tr>
                     <th
                         v-for="(value, index) in days"
-                        :class="index == 0 ? '' : 'table_days'"
+                        :class="index == 0 ? '' : 'table_day'"
                         :key="index"
                     >
-                        <span>{{ value }}</span>
+                        <span>{{ value.slice(0, 3).toUpperCase() }}</span>
                     </th>
                 </tr>
+            </thead>
+            <tbody>
                 <tr v-for="(valueOne, indexOne) in hours.dataForHTML()" :key="indexOne">
                     <template v-for="(valueTwo, indexTwo) in days">
                         <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
@@ -20,6 +22,7 @@
                             v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
                             :key="indexTwo"
                             :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
+                            class="table_cell"
                         />
                         <td
                             v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)"
@@ -33,8 +36,8 @@
                         <span>{{ hours.convert(hours.getValue(hours.data.length - 1)) }}</span>
                     </td>
                 </tr>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -44,10 +47,11 @@ import { Getter } from 'vuex-class'
 
 import ScheduleTableItem from './ScheduleTableItem.vue'
 
+import { scheduleItem, scheduleCell, schedulesByDay } from '@/@types/schedule'
+
 import ColorManager from '@/classes/colorManager'
 import HoursManager from '@/classes/hoursManager'
 import SchedulesPerDays from '@/classes/schedulesPerDays'
-import { scheduleItem, scheduleCell, schedulesByDay } from '@/@types/schedule'
 import { subjectMatter } from '@/classes/subjectMatter'
 
 @Component({
@@ -85,37 +89,59 @@ export default class extends Vue {
 
 <style lang="scss">
 @import '@/scss/abstracts/_variables.scss';
+
 .table {
     overflow-x: scroll;
+    background-color: $primary_color;
+    border-radius: $border_radius;
+    padding: 1.4rem;
+    padding-bottom: 0;
+    overflow-x: auto;
 
     table {
         border-collapse: collapse;
-        table-layout: fixed;
-        padding-bottom: 40px;
+
+        tr {
+            :nth-child(2) {
+                border-left: none;
+            }
+
+            :last-child {
+                border-right: none;
+            }
+        }
+
+        tr:nth-last-child(2) {
+            td {
+                border-bottom: none;
+            }
+        }
     }
 
-    &_days {
-        border: 1px solid #7cbbee;
-        background-color: $white;
-        height: 50px;
-        width: 100px;
-        word-wrap: break-word;
+    &_day {
+        border: 1px solid $secondary_color;
+        border-top: none;
+        height: 1px;
+        width: calc(100% / 6);
+        padding: 0 0.5rem;
+        font-size: 12px;
     }
 
     &_hours {
         height: 30px;
-        width: 1rem;
+        width: 0.6rem;
         text-align: end;
+
         span {
             position: relative;
-            top: -60%;
+            top: -50%;
             padding-right: 1rem;
+            font-size: 13px;
         }
     }
 
     &_cell {
-        background-color: $white;
-        border: 1px solid #7cbbee;
+        border: 1px solid $secondary_color;
     }
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
-    <nav class="navbar">
-        <router-link class="navbar_linkmain" to="/">
+    <header class="header">
+        <router-link class="header_linkmain" to="/">
             <h2>EN DESARROLLO</h2>
         </router-link>
-    </nav>
+    </header>
 </template>
 
 <script lang="ts">
@@ -16,9 +16,9 @@ export default class extends Vue {}
 <style lang="scss">
 @import '@/scss/abstracts/_variables.scss';
 
-.navbar {
+.header {
     width: 100%;
-    height: 4rem;
+    height: 80px;
     background-color: $primary_color;
     display: flex;
     align-items: center;
@@ -26,10 +26,11 @@ export default class extends Vue {}
 
     &_linkmain {
         text-decoration: none;
+
         h2 {
             font-weight: 700;
             font-size: 1.8rem;
-            color: $white;
+            color: $font_color;
         }
     }
 }

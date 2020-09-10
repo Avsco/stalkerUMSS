@@ -31,18 +31,14 @@ export default class extends Vue {
 @import '@/scss/abstracts/_variables.scss';
 
 .schedule {
-    border: 1px solid #7cbbee;
+    // border: 1px solid #7cbbee;
     text-align: center;
     margin: none;
     padding: none;
-    div {
-        font-size: 1rem;
-    }
 
     &_error {
-        background-color: white;
         div {
-            color: red;
+            color: $secondary_color;
         }
     }
 }

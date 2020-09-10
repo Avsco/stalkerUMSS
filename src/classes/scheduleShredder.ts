@@ -38,7 +38,7 @@ class ScheduleShredder {
     }
 
     getMinEndTime = (schedules: scheduleCell[]): string => {
-        let minTime: number = this.hours.data.length
+        let minTime: number = this.hours.getLenght()
         schedules.forEach((schedule) => {
             if (this.hours.indexOf(schedule.end) < minTime) minTime = this.hours.getIndex(schedule.end)
         })

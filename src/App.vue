@@ -40,4 +40,7 @@ export default class extends Vue {}
 
 <style lang="scss">
 @import '@/scss/index.scss';
+body {
+    margin: 0;
+}
 </style>

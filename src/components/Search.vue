@@ -1,24 +1,29 @@
 <template>
     <div class="search">
-        <div class="search_search">
-            <div class="search_suggestions">
+        <div class="container">
+            <div class="search_bar">
                 <input
                     type="text"
                     @input="verifyTeacher($event)"
                     autofocus
                     v-model="inputSearch"
                     :spellcheck="false"
+                    placeholder="Ingresa el nombre del docente a buscar"
                 />
-                <ul>
-                    <li
-                        :key="index"
-                        class="search_selectTeacher"
-                        v-for="(value, index) in Search.slice(0, 6)"
-                        @click="fillInput(value), search()"
-                    >{{ value }}</li>
-                </ul>
+                <button class="search_button" @click="searchForMatches()">BU</button>
             </div>
-            <button @click="search()">Buscar</button>
+            <ul class="search_options" v-show="search.length > 0">
+                <div>Resultados</div>
+                <li
+                    :key="index"
+                    class="search_option"
+                    v-for="(value, index) in search.slice(0, 6)"
+                    @click="fillInput(value), searchForMatches()"
+                >
+                    <div>{{ value }}</div>
+                    <div>Facultad de Ciencias y Tecnologia | Fcyt</div>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -30,27 +35,27 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class extends Vue {
     @Prop({ required: true }) content!: string[]
     @Prop({ required: true }) dispatchTo!: string
-    Search: string[] = []
+    search: string[] = []
     inputSearch: string = ''
 
     mounted() {
-        document.body.addEventListener('click', (e) => {
+        document.addEventListener('click', (e) => {
             const target: any = e.target
-            if (!(target.nodeName === 'INPUT')) this.Search = []
+            if (!(target.nodeName === 'INPUT')) this.search = []
         })
     }
 
     verifyTeacher(event: any) {
         const expReg = RegExp(this.inputSearch.toUpperCase())
-        this.Search = this.content.filter((option) => expReg.test(option))
+        this.search = this.content.filter((option) => expReg.test(option))
     }
 
     fillInput(option: string) {
         this.inputSearch = option.toUpperCase()
-        this.Search = []
+        this.search = []
     }
 
-    search() {
+    searchForMatches() {
         this.$store.dispatch(this.dispatchTo, this.inputSearch)
     }
 }
@@ -58,107 +63,75 @@ export default class extends Vue {
 
 <style lang="scss">
 @import '@/scss/abstracts/_variables.scss';
+
 .search {
     width: 100%;
 
-    &_search {
-        display: flex;
-        margin-bottom: 5rem;
-
-        button {
-            position: relative;
-            background-color: $primary_color;
-            height: 2.6rem;
-            width: 5rem;
-            margin-left: 2rem;
-            color: $white;
-            left: -25%;
-        }
-
-        @media (max-width: $medium) {
-            flex-direction: column;
-            align-items: center;
-            button {
-                margin-left: none;
-                z-index: 1;
-                margin-top: 2rem;
-                left: -5%;
-                right: 0;
-            }
-        }
-    }
-
-    &_suggestions {
-        position: relative;
-        left: 20%;
-        flex-grow: 1;
-        z-index: 10;
-        input[type='text'] {
-            border: 1px solid $primary_color;
-            padding: 0 1rem;
-            font-size: 1.2rem;
-            width: 50%;
-            height: 2.6rem;
-        }
-
-        ul {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 50%;
-            background-color: #fff;
-        }
-
-        @media (max-width: $medium) {
-            left: 0;
-            flex-grow: none;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-
-            input[type='text'] {
-                text-align: center;
-            }
-
-            ul {
-                width: 150%;
-                left: -25%;
-            }
-        }
-
-        @media (max-width: $small) {
-            input[type='text'] {
-                width: 100%;
-                font-size: 1.2rem;
-                text-align: center;
-            }
-
-            ul {
-                width: 100%;
-                left: 0;
-                li {
-                    text-align: center;
-                }
-            }
-        }
-    }
-
-    &_selectTeacher {
-        padding: 0.2rem 1rem;
-        border-top: 1px solid $primary_color;
-        border-left: 1px solid $primary_color;
-        border-right: 1px solid $primary_color;
-        list-style-type: none;
-    }
-    &_selectTeacher:hover {
+    &_bar {
+        height: 40px;
+        border-radius: $border_radius;
         background-color: $primary_color;
-        color: $white;
+        display: flex;
     }
-    &_selectTeacher:last-of-type {
-        border-bottom: 1px solid $primary_color;
+
+    &_options {
+        background-color: $primary_color;
+        border-radius: $border_radius;
+        padding: 0 1rem;
+        transition: 1s;
+
+        > div {
+            padding: 0.7rem 0;
+            padding-bottom: 0.4rem;
+        }
+
+        li:nth-child(2) {
+            border-top: 3px solid $secondary_color;
+        }
     }
-    &_selectTeacher:first-of-type {
-        border-top: none;
+
+    &_option {
+        width: 100%;
+        list-style: none;
+        transition: 1s;
+        padding: 1rem 0;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid $font_color;
+        }
+
+        div:nth-child(2) {
+            font-size: 0.76rem;
+            opacity: 0.7;
+        }
     }
+
+    &_button {
+        background-color: transparent;
+        border: none;
+        color: $font_color;
+        width: 5rem;
+        cursor: pointer;
+    }
+
+    input[type='text'] {
+        border: none;
+        border-radius: $border_radius;
+        height: calc(100% - 50%);
+        padding: 10px 8px;
+        padding-left: 1rem;
+        width: 100%;
+        background-color: $primary_color;
+        color: $font_color;
+    }
+
+    ::placeholder {
+        color: $font_color;
+    }
+}
+
+.container {
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 </style>
