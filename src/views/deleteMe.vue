@@ -34,7 +34,7 @@ export default class extends Vue {}
         text-transform: capitalize;
     }
 
-    @include for-desktop-up {
+    @include large {
         flex-direction: row;
     }
 }

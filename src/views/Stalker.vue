@@ -45,7 +45,7 @@ export default class extends Vue {
         gap: 3rem;
     }
 
-    @include for-desktop-up {
+    @include large {
         &_search {
             align-self: start;
         }

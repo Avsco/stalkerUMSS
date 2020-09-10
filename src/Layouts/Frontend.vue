@@ -25,5 +25,8 @@ export default class extends Vue {}
 @import '@/scss/abstracts/_variables.scss';
 
 .frontend {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 80px calc(100% - 160px) 80px;
 }
 </style>
