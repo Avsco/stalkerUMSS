@@ -1,15 +1,22 @@
 <template>
     <header class="header">
         <router-link class="header_linkmain" to="/">
-            <h2>EN DESARROLLO</h2>
+            <h2>En Desarrollo</h2>
         </router-link>
+        <Notifications class="header_notifications" />
     </header>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
-@Component({})
+import Notifications from '@/components/Notifications.vue'
+
+@Component({
+    components: {
+        Notifications,
+    },
+})
 export default class extends Vue {}
 </script>
 
@@ -17,6 +24,7 @@ export default class extends Vue {}
 @import '@/scss/abstracts/_variables.scss';
 
 .header {
+    position: relative;
     width: 100%;
     height: 80px;
     background-color: $primary_color;
@@ -32,6 +40,12 @@ export default class extends Vue {}
             font-size: 1.8rem;
             color: $font_color;
         }
+    }
+
+    &_notifications {
+        position: absolute;
+        right: 0;
+        padding: 3rem;
     }
 }
 </style>

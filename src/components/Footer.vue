@@ -9,7 +9,9 @@
                         :key="index"
                         v-for="(value, index) in links"
                         target="_blank"
-                    >{{ value.name }}</a>
+                    >
+                        <SystemIcons :icon="value.alt" />
+                    </a>
                 </div>
             </span>
             <img class="footer_image" src="@/assets/scesi_white.png" alt />
@@ -18,18 +20,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
-@Component({})
+import SystemIcons from '@/components/SystemIcons.vue'
+
+@Component({
+    components: {
+        SystemIcons,
+    },
+})
 export default class extends Vue {
     links: any[] = [
         {
-            name: 'fcyt',
-            route: 'http://www.fcyt.umss.edu.bo/',
+            alt: 'facebook',
+            route: 'https://www.facebook.com/scesi',
         },
         {
-            name: 'Websis',
-            route: 'http://websis.umss.edu.bo/',
+            alt: 'instagram',
+            route: 'https://www.instagram.com/scesiumss/?hl=es',
+        },
+        {
+            alt: 'twitter',
+            route: 'https://twitter.com/ScesiU',
+        },
+        {
+            alt: 'github',
+            route: 'https://github.com/scesi',
+        },
+        {
+            alt: 'youtube',
+            route: 'https://www.youtube.com/channel/UCfhSc_xLVxFubp9exyacy0Q',
         },
     ]
 }
@@ -55,9 +75,6 @@ export default class extends Vue {
         padding: 0 2rem;
     }
 
-    &_content {
-    }
-
     &_links {
     }
 
@@ -69,6 +86,20 @@ export default class extends Vue {
 
     &_image {
         width: 70px;
+    }
+
+    @include large {
+        &_link {
+            padding: 0 10px;
+            svg {
+                height: 24px;
+                width: 24px;
+            }
+        }
+
+        &_image {
+            width: 80px;
+        }
     }
 }
 </style>

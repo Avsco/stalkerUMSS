@@ -10,16 +10,11 @@
                     :spellcheck="false"
                     placeholder="Ingresa el nombre del docente a buscar"
                 />
-                <button class="search_button" @click="searchForMatches()">BU</button>
+                <button class="search_button" @click="searchForMatches()"><SystemIcons icon="search" /></button>
             </div>
             <ul class="search_options" v-show="search.length > 0">
                 <div>Resultados</div>
-                <li
-                    :key="index"
-                    class="search_option"
-                    v-for="(value, index) in search.slice(0, 6)"
-                    @click="fillInput(value), searchForMatches()"
-                >
+                <li :key="index" class="search_option" v-for="(value, index) in search.slice(0, 6)" @click="fillInput(value), searchForMatches()">
                     <div>{{ value }}</div>
                     <div>Facultad de Ciencias y Tecnologia | Fcyt</div>
                 </li>
@@ -31,7 +26,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
-@Component({})
+import SystemIcons from '@/components/SystemIcons.vue'
+
+@Component({
+    components: {
+        SystemIcons
+    }
+})
 export default class extends Vue {
     @Prop({ required: true }) content!: string[]
     @Prop({ required: true }) dispatchTo!: string
@@ -109,9 +110,17 @@ export default class extends Vue {
     &_button {
         background-color: transparent;
         border: none;
-        color: $font_color;
         width: 5rem;
         cursor: pointer;
+        color: $font_color;
+
+        svg {
+            width: 20px;
+        }
+
+        &:focus {
+            outline: 0;
+        }
     }
 
     input[type='text'] {
@@ -123,6 +132,7 @@ export default class extends Vue {
         width: 100%;
         background-color: $primary_color;
         color: $font_color;
+        font-size: 16px;
     }
 
     ::placeholder {
