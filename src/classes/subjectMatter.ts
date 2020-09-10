@@ -1,4 +1,4 @@
-import { scheduleItem } from '../@types/schedule'
+import { scheduleItem } from '@/@types/schedule'
 
 export interface subjectMatter {
     subjectName: string
