@@ -21,7 +21,7 @@ export default class extends Vue {}
 </script>
 
 <style lang="scss">
-@import '@/scss/abstracts/_variables.scss';
+@import '@/scss/abstracts/variables.scss';
 
 .header {
     position: relative;
@@ -36,16 +36,14 @@ export default class extends Vue {}
         text-decoration: none;
 
         h2 {
-            font-weight: 700;
-            font-size: 1.8rem;
             color: $font_color;
         }
     }
 
     &_notifications {
         position: absolute;
-        right: 0;
-        padding: 3rem;
+        right: 20px;
+        top: 24px;
     }
 }
 </style>

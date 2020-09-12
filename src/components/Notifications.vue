@@ -23,6 +23,10 @@ export default class extends Vue {}
 
 .notifications {
     svg {
+        width: 26px;
+    }
+
+    @include large {
         width: 32px;
     }
 }

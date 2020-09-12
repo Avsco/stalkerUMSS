@@ -10,11 +10,18 @@
                     :spellcheck="false"
                     placeholder="Ingresa el nombre del docente a buscar"
                 />
-                <button class="search_button" @click="searchForMatches()"><SystemIcons icon="search" /></button>
+                <button class="search_button" @click="searchForMatches()">
+                    <SystemIcons icon="search" />
+                </button>
             </div>
             <ul class="search_options" v-show="search.length > 0">
                 <div>Resultados</div>
-                <li :key="index" class="search_option" v-for="(value, index) in search.slice(0, 6)" @click="fillInput(value), searchForMatches()">
+                <li
+                    :key="index"
+                    class="search_option"
+                    v-for="(value, index) in search.slice(0, 5)"
+                    @click="fillInput(value), searchForMatches()"
+                >
                     <div>{{ value }}</div>
                     <div>Facultad de Ciencias y Tecnologia | Fcyt</div>
                 </li>
@@ -30,8 +37,8 @@ import SystemIcons from '@/components/SystemIcons.vue'
 
 @Component({
     components: {
-        SystemIcons
-    }
+        SystemIcons,
+    },
 })
 export default class extends Vue {
     @Prop({ required: true }) content!: string[]
@@ -132,7 +139,7 @@ export default class extends Vue {
         width: 100%;
         background-color: $primary_color;
         color: $font_color;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     ::placeholder {

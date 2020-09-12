@@ -72,16 +72,22 @@ export default class extends Vue {
         align-items: center;
         width: 100%;
         height: 100%;
-        padding: 0 2rem;
+        padding: 0 1rem;
     }
 
     &_links {
     }
 
     &_link {
+        position: relative;
+        bottom: -6px;
         color: $font_color;
         padding: 0 5px;
         text-decoration: none;
+
+        svg {
+            height: 20px;
+        }
     }
 
     &_image {
@@ -89,11 +95,15 @@ export default class extends Vue {
     }
 
     @include large {
+        &_container {
+            padding: 0.2rem;
+        }
+
         &_link {
             padding: 0 10px;
+
             svg {
                 height: 24px;
-                width: 24px;
             }
         }
 
