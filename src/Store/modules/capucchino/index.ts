@@ -1,4 +1,4 @@
-import { ActionContext } from 'vuex'
+import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import axios from 'axios'
 
@@ -6,35 +6,29 @@ import { getUrl, concatUrl } from '@/@types/url'
 import { carrer, basicCarrer } from '@/@types/cappuchino'
 import { subjectMatter } from '@/classes/subjectMatter'
 
-interface IState {
-    carrerSelected: carrer
-    carrers: basicCarrer[]
-    subjectsMatter: subjectMatter[]
-}
-
-const state: IState = {
-    carrerSelected: {
+class State {
+    carrerSelected: carrer = {
         name: 'undefined',
         levels: []
-    },
-    carrers: [],
-    subjectsMatter: []
+    }
+    carrers: basicCarrer[] = []
+    subjectsMatter: subjectMatter[] = []
 }
 
-const getters = {
-    carrerSelected: (state: IState) => state.carrerSelected,
-    carrers: (state: IState) => state.carrers,
-    subjectsMatter: (state: IState) => state.subjectsMatter
+const getters: GetterTree<State, any> = {
+    carrerSelected: (state) => state.carrerSelected,
+    carrers: (state) => state.carrers,
+    subjectsMatter: (state) => state.subjectsMatter
 }
 
-const mutations = {
-    mutationCarrerSelected: (state: IState, payload: carrer) => (state.carrerSelected = payload),
-    mutationCarrers: (state: IState, payload: basicCarrer[]) => (state.carrers = payload),
-    mutationSubjectsMatter: (state: IState, payload: subjectMatter[]) => (state.subjectsMatter = payload)
+const mutations: MutationTree<State> = {
+    mutationCarrerSelected: (state, payload: carrer) => (state.carrerSelected = payload),
+    mutationCarrers: (state, payload: basicCarrer[]) => (state.carrers = payload),
+    mutationSubjectsMatter: (state, payload: subjectMatter[]) => (state.subjectsMatter = payload)
 }
 
 //TODO probar que funciona
-const actions = {
+const actions: ActionTree<State, any> = {
     actionGetCarrers: async ({ commit }: ActionContext<any, any>) => {
         try {
             const { data } = await axios.get(getUrl())
@@ -86,7 +80,7 @@ const actions = {
 
 export default {
     namespaced: true,
-    state,
+    state: new State(),
     getters,
     mutations,
     actions

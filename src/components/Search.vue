@@ -1,32 +1,30 @@
 <template>
     <div class="search">
-        <div class="container">
-            <div class="search_bar">
-                <input
-                    type="text"
-                    @input="verifyTeacher($event)"
-                    autofocus
-                    v-model="inputSearch"
-                    :spellcheck="false"
-                    placeholder="Ingresa el nombre del docente a buscar"
-                />
-                <button class="search_button" @click="searchForMatches()">
-                    <SystemIcons icon="search" />
-                </button>
-            </div>
-            <ul class="search_options" v-show="search.length > 0">
-                <div>Resultados</div>
-                <li
-                    :key="index"
-                    class="search_option"
-                    v-for="(value, index) in search.slice(0, 5)"
-                    @click="fillInput(value), searchForMatches()"
-                >
-                    <div>{{ value }}</div>
-                    <div>Facultad de Ciencias y Tecnologia | Fcyt</div>
-                </li>
-            </ul>
+        <div class="search_bar">
+            <input
+                type="text"
+                @input="verifyTeacher()"
+                autofocus
+                v-model="inputSearch"
+                :spellcheck="false"
+                placeholder="Ingresa el nombre del docente a buscar"
+            />
+            <button class="search_button" @click="sendMatch()">
+                <SystemIcons icon="search" />
+            </button>
         </div>
+        <ul class="search_options" v-show="search.length > 0">
+            <div>Resultados</div>
+            <li
+                :key="index"
+                class="search_option"
+                v-for="(value, index) in search.slice(0, 5)"
+                @click="fillInput(value), sendMatch()"
+            >
+                <div>{{ value }}</div>
+                <div>Facultad de Ciencias y Tecnologia | Fcyt</div>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -34,6 +32,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 import SystemIcons from '@/components/SystemIcons.vue'
+
+import StringMatchManager from '@/classes/StringMatchManager'
 
 @Component({
     components: {
@@ -43,6 +43,7 @@ import SystemIcons from '@/components/SystemIcons.vue'
 export default class extends Vue {
     @Prop({ required: true }) content!: string[]
     @Prop({ required: true }) dispatchTo!: string
+    stringMatchManager: StringMatchManager = new StringMatchManager()
     search: string[] = []
     inputSearch: string = ''
 
@@ -53,7 +54,12 @@ export default class extends Vue {
         })
     }
 
-    verifyTeacher(event: any) {
+    getMatches() {
+        this.search = this.stringMatchManager.get(this.inputSearch, this.content)
+    }
+
+    //TODO: cambiar  con el gerMatches y ver si funciona
+    verifyTeacher() {
         const expReg = RegExp(this.inputSearch.toUpperCase())
         this.search = this.content.filter((option) => expReg.test(option))
     }
@@ -63,14 +69,15 @@ export default class extends Vue {
         this.search = []
     }
 
-    searchForMatches() {
+    //Manda a que busque los horarios para meterlos al schedule
+    sendMatch() {
         this.$store.dispatch(this.dispatchTo, this.inputSearch)
     }
 }
 </script>
 
 <style lang="scss">
-@import '@/scss/abstracts/_variables.scss';
+@import '@/scss/abstracts/variables.scss';
 
 .search {
     width: 100%;
@@ -79,7 +86,9 @@ export default class extends Vue {
         height: 40px;
         border-radius: $border_radius;
         background-color: $primary_color;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
         display: flex;
+        width: 100%;
     }
 
     &_options {
@@ -117,9 +126,9 @@ export default class extends Vue {
     &_button {
         background-color: transparent;
         border: none;
-        width: 5rem;
         cursor: pointer;
         color: $font_color;
+        width: 5rem;
 
         svg {
             width: 20px;
@@ -133,6 +142,7 @@ export default class extends Vue {
     input[type='text'] {
         border: none;
         border-radius: $border_radius;
+
         height: calc(100% - 50%);
         padding: 10px 8px;
         padding-left: 1rem;
@@ -145,10 +155,5 @@ export default class extends Vue {
     ::placeholder {
         color: $font_color;
     }
-}
-
-.container {
-    margin-left: 2rem;
-    margin-right: 2rem;
 }
 </style>

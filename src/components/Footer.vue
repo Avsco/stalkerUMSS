@@ -61,6 +61,7 @@ export default class extends Vue {
 
 .footer {
     background-color: $primary_color;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
     width: 100%;
     height: 80px;
     display: flex;
@@ -73,9 +74,6 @@ export default class extends Vue {
         width: 100%;
         height: 100%;
         padding: 0 1rem;
-    }
-
-    &_links {
     }
 
     &_link {
@@ -96,7 +94,7 @@ export default class extends Vue {
 
     @include large {
         &_container {
-            padding: 0.2rem;
+            padding: 0 2rem;
         }
 
         &_link {

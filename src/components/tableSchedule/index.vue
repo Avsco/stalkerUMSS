@@ -92,11 +92,13 @@ export default class extends Vue {
 
 .table {
     overflow-x: scroll;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
     background-color: $primary_color;
     border-radius: $border_radius;
-    padding: 1.4rem;
+    padding: 1.5rem 1rem;
     padding-bottom: 0;
     overflow-x: auto;
+    user-select: none;
 
     table {
         border-collapse: collapse;
@@ -123,6 +125,7 @@ export default class extends Vue {
         border-top: none;
         height: 1px;
         width: calc(100% / 6);
+        max-width: calc(100% / 6);
         padding: 0 0.5rem;
         font-size: 12px;
     }
@@ -135,7 +138,7 @@ export default class extends Vue {
         span {
             position: relative;
             top: -19px;
-            padding-right: 1rem;
+            padding-right: 10px;
             font-size: 13px;
         }
     }

@@ -1,4 +1,4 @@
-import { ActionContext } from 'vuex'
+import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import axios from 'axios'
 
@@ -7,27 +7,23 @@ import { concatUrl, getUrl } from '@/@types/url'
 import { scheduleItem } from '@/@types/schedule'
 import { subjectMatter, subjectMatters } from '@/classes/subjectMatter'
 
-interface IState {
-    schedulesTeacher: subjectMatter[]
-    allTeachers: string[]
-}
 //TODO: volver el allteahcer un SET()
-const state: IState = {
-    schedulesTeacher: [],
-    allTeachers: []
+class State {
+    schedulesTeacher: subjectMatter[] = []
+    allTeachers: string[] = []
 }
 
-const getters = {
-    schedulesTeacher: (state: IState) => state.schedulesTeacher,
-    allTeachers: (state: IState) => state.allTeachers
+const getters: GetterTree<State, any> = {
+    schedulesTeacher: (state) => state.schedulesTeacher,
+    allTeachers: (state) => state.allTeachers
 }
 
-const mutations = {
-    mutationSchedules: (state: IState, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
-    mutationAllTeachers: (state: IState, payload: string[]) => (state.allTeachers = payload)
+const mutations: MutationTree<State> = {
+    mutationSchedules: (state, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
+    mutationAllTeachers: (state, payload: string[]) => (state.allTeachers = payload)
 }
 
-const actions = {
+const actions: ActionTree<State, any> = {
     //TODO: deshacerse de este metodo cuando el flujo de datos vuelva
     actionSearch: ({ dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         dispatch('actionGetScheludes', nameTeacher)
@@ -125,7 +121,7 @@ const actions = {
 
 export default {
     namespaced: true,
-    state,
+    state: new State(),
     getters,
     mutations,
     actions
