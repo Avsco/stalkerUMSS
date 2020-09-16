@@ -23,27 +23,27 @@ class hoursManager {
         '2145'
     ]
 
-    getData = () => this.data.slice(0, -1)
+    public getData = () => this.data.slice(0, -1)
 
-    getValue = (index: number) => this.data[index]
+    public getValue = (index: number) => this.data[index]
 
-    getIndex = (value: string) => this.data.indexOf(value)
+    public getIndex = (value: string) => this.data.indexOf(value)
 
-    getLenght = () => this.data.length
+    public getLenght = () => this.data.length
 
-    dataForHTML = () => this.getData().map((data) => this.convert(data))
+    public dataForHTML = () => this.getData().map((data) => this.convert(data))
 
-    convert = (hour: string): string => hour.slice(0, hour.length > 3 ? 2 : 1) + ':' + hour.slice(-2)
+    public convert = (hour: string): string => hour.slice(0, hour.length > 3 ? 2 : 1) + ':' + hour.slice(-2)
 
-    IndexInRange = (start: string, end: string, indexStartSchedule: number): boolean =>
+    public IndexInRange = (start: string, end: string, indexStartSchedule: number): boolean =>
         this.getIndex(start) <= indexStartSchedule && this.getIndex(end) > indexStartSchedule
 
-    inRange = (start: string, end: string, startSchedule: string): boolean =>
+    public inRange = (start: string, end: string, startSchedule: string): boolean =>
         this.getIndex(start) <= this.getIndex(startSchedule) && this.getIndex(end) > this.getIndex(startSchedule)
 
-    compareHour = (indexHourSchedule: number, scheduleHour: string) => this.getValue(indexHourSchedule) == scheduleHour
+    public compareHour = (indexHourSchedule: number, scheduleHour: string) => this.getValue(indexHourSchedule) == scheduleHour
 
-    indexOf = (hour: string) => this.data.indexOf(hour)
+    public indexOf = (hour: string) => this.data.indexOf(hour)
 }
 
 export default hoursManager

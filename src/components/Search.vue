@@ -69,7 +69,6 @@ export default class extends Vue {
         this.search = []
     }
 
-    //Manda a que busque los horarios para meterlos al schedule
     sendMatch() {
         this.$store.dispatch(this.dispatchTo, this.inputSearch)
     }

@@ -1,5 +1,5 @@
 class StringMatchManager {
-    get = (searchedWord: string, wordsToCompare: string[]): string[] => {
+    public get = (searchedWord: string, wordsToCompare: string[]): string[] => {
         const expresions = this.searchForWord(
             searchedWord
                 .toLocaleUpperCase()
@@ -13,7 +13,7 @@ class StringMatchManager {
         return wordsToCompare.filter((word, index) => matchesOfWords[index] == maxCountOfMatches)
     }
 
-    searchForWord = (regseExp: RegExp[]) => (wordToCompare: string): number =>
+    private searchForWord = (regseExp: RegExp[]) => (wordToCompare: string): number =>
         regseExp.reduce((matches: number, regExp: RegExp) => {
             if (regExp.test(wordToCompare.toLocaleUpperCase())) return matches + 1
             return matches

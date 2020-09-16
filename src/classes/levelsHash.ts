@@ -14,7 +14,7 @@ export default class LevelsMap {
         this.levels.set('J', 'Semestre 10')
     }
 
-    get(key: string) {
+    public get(key: string) {
         return this.levels.get(key)
     }
 }

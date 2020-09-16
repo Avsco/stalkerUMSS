@@ -7,7 +7,7 @@ export interface subjectMatter {
 }
 
 export class subjectMatters {
-    subjectMatters: subjectMatter[] = []
+    private subjectMatters: subjectMatter[] = []
 
     add(subjectMatterOne: subjectMatter) {
         if (this.subjectMatters.length == 0 && subjectMatterOne.schedules.length > 0) this.subjectMatters.push(subjectMatterOne)
@@ -22,8 +22,8 @@ export class subjectMatters {
         }
     }
 
-    getSubjectMatters = (): subjectMatter[] => this.subjectMatters
+    public getSubjectMatters = (): subjectMatter[] => this.subjectMatters
 
-    isRepeated = (subjectMatterOne: subjectMatter, subjectMatterTwo: subjectMatter) =>
+    private isRepeated = (subjectMatterOne: subjectMatter, subjectMatterTwo: subjectMatter) =>
         subjectMatterTwo.groupCode == subjectMatterOne.groupCode && subjectMatterTwo.subjectName == subjectMatterOne.subjectName
 }
