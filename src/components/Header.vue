@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <router-link class="header_linkmain" to="/">
-            <h2>En Desarrollo</h2>
+            <h2>SCESI</h2>
         </router-link>
         <Notifications class="header_notifications" />
     </header>
@@ -14,8 +14,8 @@ import Notifications from '@/components/Notifications.vue'
 
 @Component({
     components: {
-        Notifications,
-    },
+        Notifications
+    }
 })
 export default class extends Vue {}
 </script>

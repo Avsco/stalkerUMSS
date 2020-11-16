@@ -32,8 +32,8 @@ import StringMatchManager from '@/classes/StringMatchManager'
 
 @Component({
     components: {
-        SystemIcons,
-    },
+        SystemIcons
+    }
 })
 export default class extends Vue {
     @Prop({ required: true }) content!: string[]
@@ -131,7 +131,7 @@ export default class extends Vue {
         }
     }
 
-    input[type='text'] {
+    input[type='search'] {
         background-color: $primary_color;
         border: none;
         border-radius: $border_radius;
