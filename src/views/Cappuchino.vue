@@ -12,7 +12,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
 import ScheduleTable from '@/components/tableSchedule/index.vue'
-import Options from '@/components/capucchino/Options/index.vue'
+import Options from '@/components/capucchino/Options.vue'
 
 import { subjectMatters } from '@/classes/subjectMatter'
 
@@ -50,12 +50,12 @@ export default class extends Vue {
         }
 
         &_schedule {
-            grid-column: 1/2;
+            grid-column: 2/3;
             // grid-row: 1/2;
         }
 
         &_options {
-            grid-column: 2/3;
+            grid-column: 1/2;
             // grid-row: 0/1;
         }
     }
