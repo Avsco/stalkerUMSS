@@ -31,7 +31,7 @@
                                         :value="getSubjectMatter(indexTwo, indexThree, indexFour)"
                                         v-model="subjectsMatter"
                                     />
-                                    {{ valueFour.teacher | capitalizeName }}
+                                    <span class="options_nameteacher">{{ valueFour.teacher }}</span>
                                 </span>
                                 <span>{{ valueFour.code }}</span>
                             </label>
@@ -91,7 +91,7 @@ export default class extends Vue {
         return {
             subjectName: this.carrerActive.levels[level].subjects[subject].name,
             groupCode: this.carrerActive.levels[level].subjects[subject].groups[group].code,
-            schedules: this.carrerActive.levels[level].subjects[subject].groups[group].schedules,
+            schedules: this.carrerActive.levels[level].subjects[subject].groups[group].schedules
         }
     }
 }
@@ -150,6 +150,10 @@ export default class extends Vue {
             justify-content: space-between;
             width: 100%;
         }
+    }
+
+    &_nameteacher {
+        text-transform: capitalize;
     }
 }
 </style>
