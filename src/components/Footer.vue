@@ -3,14 +3,14 @@
         <div class="footer_container">
             <span>
                 <ul class="footer_links">
-                    <li class="footer_link" :href="value.route" :key="index" v-for="(value, index) in links" target="_blank">
-                        <a>
+                    <li class="footer_link" v-for="(value, index) in links" :key="index">
+                        <a :href="value.route" target="_blank" :hreflang="value.alt">
                             <SystemIcons :icon="value.alt" />
                         </a>
                     </li>
                 </ul>
             </span>
-            <img class="footer_image" src="@/assets/scesi_white.png" alt />
+            <img class="footer_image" src="@/assets/scesi_white.png" alt="scesi" />
         </div>
     </footer>
 </template>
@@ -22,31 +22,31 @@ import SystemIcons from '@/components/SystemIcons.vue'
 
 @Component({
     components: {
-        SystemIcons,
-    },
+        SystemIcons
+    }
 })
 export default class extends Vue {
     links: any[] = [
         {
             alt: 'facebook',
-            route: 'https://www.facebook.com/scesi',
+            route: 'https://www.facebook.com/scesi'
         },
         {
             alt: 'instagram',
-            route: 'https://www.instagram.com/scesiumss/?hl=es',
+            route: 'https://www.instagram.com/scesiumss/?hl=es'
         },
         {
             alt: 'twitter',
-            route: 'https://twitter.com/ScesiU',
+            route: 'https://twitter.com/ScesiU'
         },
         {
             alt: 'github',
-            route: 'https://github.com/scesi',
+            route: 'https://github.com/scesi'
         },
         {
             alt: 'youtube',
-            route: 'https://www.youtube.com/channel/UCfhSc_xLVxFubp9exyacy0Q',
-        },
+            route: 'https://www.youtube.com/channel/UCfhSc_xLVxFubp9exyacy0Q'
+        }
     ]
 }
 </script>
@@ -80,9 +80,16 @@ export default class extends Vue {
     &_link {
         position: relative;
         bottom: -6px;
-        color: $font_color;
         padding: 0 5px;
         list-style: none;
+
+        &:link {
+            color: $font_color;
+        }
+
+        :visited {
+            color: $font_color;
+        }
 
         svg {
             height: 24px;
@@ -101,8 +108,6 @@ export default class extends Vue {
 
         &_link {
             padding: 0 10px;
-            list-style: none;
-            display: inline;
 
             svg {
                 height: 29;

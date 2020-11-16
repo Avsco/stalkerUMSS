@@ -51,8 +51,8 @@ import { subjectMatter } from '@/classes/subjectMatter'
 
 @Component({
     components: {
-        ScheduleTableItem,
-    },
+        ScheduleTableItem
+    }
 })
 export default class extends Vue {
     @Prop({ required: true }) subjectMatters!: subjectMatter[]
@@ -74,7 +74,7 @@ export default class extends Vue {
                     subjectName: subjectMatter.subjectName,
                     day: schedule.day,
                     start: schedule.start,
-                    end: schedule.end,
+                    end: schedule.end
                 })
             })
         })
