@@ -2,7 +2,7 @@
     <div class="search">
         <div class="search_bar">
             <input
-                type="text"
+                type="search"
                 @input="verifyTeacher()"
                 autofocus
                 v-model="inputSearch"
@@ -15,12 +15,7 @@
         </div>
         <ul class="search_options" v-show="search.length > 0">
             <div>Resultados</div>
-            <li
-                :key="index"
-                class="search_option"
-                v-for="(value, index) in search.slice(0, 5)"
-                @click="fillInput(value), sendMatch()"
-            >
+            <li :key="index" class="search_option" v-for="(value, index) in search.slice(0, 5)" @click="fillInput(value), sendMatch()">
                 <div>{{ value }}</div>
                 <div>Facultad de Ciencias y Tecnologia | Fcyt</div>
             </li>
@@ -79,13 +74,11 @@ export default class extends Vue {
 @import '@/scss/abstracts/variables.scss';
 
 .search {
-    width: 100%;
-
     &_bar {
-        height: 40px;
+        height: 54px;
         border-radius: $border_radius;
         background-color: $primary_color;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
+        box-shadow: $box-shadow;
         display: flex;
         width: 100%;
     }
@@ -139,16 +132,13 @@ export default class extends Vue {
     }
 
     input[type='text'] {
+        background-color: $primary_color;
         border: none;
         border-radius: $border_radius;
-
-        height: calc(100% - 50%);
-        padding: 10px 8px;
+        font-size: 14px;
+        color: $font_color;
         padding-left: 1rem;
         width: 100%;
-        background-color: $primary_color;
-        color: $font_color;
-        font-size: 14px;
     }
 
     ::placeholder {

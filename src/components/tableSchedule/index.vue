@@ -1,13 +1,12 @@
 <template>
     <div class="table">
         <table>
+            <caption class="table_caption">
+                Horarios UMSS
+            </caption>
             <thead>
                 <tr>
-                    <th
-                        v-for="(value, index) in days"
-                        :class="index == 0 ? '' : 'table_day'"
-                        :key="index"
-                    >
+                    <th v-for="(value, index) in days" :class="index == 0 ? '' : 'table_day'" :key="index">
                         <span>{{ value.slice(0, 3).toUpperCase() }}</span>
                     </th>
                 </tr>
@@ -24,11 +23,7 @@
                             :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
                             class="table_cell"
                         />
-                        <td
-                            v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)"
-                            :key="indexTwo"
-                            class="table_cell"
-                        ></td>
+                        <td v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)" :key="indexTwo" class="table_cell"></td>
                     </template>
                 </tr>
                 <tr>
@@ -92,7 +87,7 @@ export default class extends Vue {
 
 .table {
     overflow-x: scroll;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
+    box-shadow: $box-shadow;
     background-color: $primary_color;
     border-radius: $border_radius;
     padding: 1.5rem 1rem;
@@ -120,12 +115,14 @@ export default class extends Vue {
         }
     }
 
+    &_caption {
+        display: none;
+    }
+
     &_day {
         border: 1px solid $secondary_color;
         border-top: none;
-        height: 1px;
         width: calc(100% / 6);
-        max-width: calc(100% / 6);
         padding: 0 0.5rem;
         font-size: 12px;
     }

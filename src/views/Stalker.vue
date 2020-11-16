@@ -1,10 +1,10 @@
 <template>
-    <section class="stalker">
-        <div class="stalker_container">
+    <main class="stalker">
+        <section class="stalker_container">
             <Search class="stalker_search" :content="teachers" dispatchTo="stalking/actionSearch" />
-            <ScheduleTable :subjectMatters="schedules" />
-        </div>
-    </section>
+            <ScheduleTable :subjectMatters="schedules" class="stalker_schedule" />
+        </section>
+    </main>
 </template>
 
 <script lang="ts">
@@ -37,22 +37,35 @@ export default class extends Vue {
 @import '@/scss/abstracts/mixins';
 
 .stalker {
-    padding-top: 2rem;
-    padding: 2rem;
+    &_search {
+        margin: 15px 30px;
+    }
 
     &_container {
         display: grid;
-        gap: 3rem;
+    }
+
+    &_schedule {
+        margin: 31px 11px;
+        margin-top: 0;
     }
 
     @include large {
+        padding: 2rem;
+
         &_search {
             align-self: start;
+            margin: 0;
+            margin-right: 11px;
         }
 
         &_container {
             display: grid;
             grid-template-columns: 0.5fr 1fr;
+        }
+
+        &_schedule {
+            margin-right: 31px;
         }
     }
 }

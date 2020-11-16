@@ -1,8 +1,8 @@
 <template>
-    <div class="delete">
+    <main class="delete">
         <router-link class="delete_button" to="/stalker">stalker</router-link>
         <router-link class="delete_button" to="/capucchino">capucchino</router-link>
-    </div>
+    </main>
 </template>
 
 <script lang="ts">

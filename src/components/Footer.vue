@@ -2,17 +2,13 @@
     <footer class="footer">
         <div class="footer_container">
             <span>
-                <div class="footer_links">
-                    <a
-                        class="footer_link"
-                        :href="value.route"
-                        :key="index"
-                        v-for="(value, index) in links"
-                        target="_blank"
-                    >
-                        <SystemIcons :icon="value.alt" />
-                    </a>
-                </div>
+                <ul class="footer_links">
+                    <li class="footer_link" :href="value.route" :key="index" v-for="(value, index) in links" target="_blank">
+                        <a>
+                            <SystemIcons :icon="value.alt" />
+                        </a>
+                    </li>
+                </ul>
             </span>
             <img class="footer_image" src="@/assets/scesi_white.png" alt />
         </div>
@@ -61,9 +57,9 @@ export default class extends Vue {
 
 .footer {
     background-color: $primary_color;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
+    box-shadow: $box-shadow;
     width: 100%;
-    height: 80px;
+    height: 100%;
     display: flex;
     align-items: center;
 
@@ -76,20 +72,26 @@ export default class extends Vue {
         padding: 0 1rem;
     }
 
+    &_links {
+        display: flex;
+        padding: 0;
+    }
+
     &_link {
         position: relative;
         bottom: -6px;
         color: $font_color;
         padding: 0 5px;
-        text-decoration: none;
+        list-style: none;
 
         svg {
-            height: 20px;
+            height: 24px;
         }
     }
 
     &_image {
-        width: 70px;
+        width: 71px;
+        padding-right: calc(26px - 1rem);
     }
 
     @include large {
@@ -99,10 +101,17 @@ export default class extends Vue {
 
         &_link {
             padding: 0 10px;
+            list-style: none;
+            display: inline;
 
             svg {
-                height: 24px;
+                height: 29;
             }
+        }
+
+        &_links::before {
+            content: 'Siguenos en:';
+            font-size: 18px;
         }
 
         &_image {

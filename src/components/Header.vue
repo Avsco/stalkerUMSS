@@ -24,14 +24,14 @@ export default class extends Vue {}
 @import '@/scss/abstracts/variables.scss';
 
 .header {
-    position: relative;
+    // position: relative;
     width: 100%;
-    height: 80px;
+    height: 100%;
     background-color: $primary_color;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.66);
+    box-shadow: $box-shadow;
 
     &_linkmain {
         text-decoration: none;
@@ -43,8 +43,8 @@ export default class extends Vue {}
 
     &_notifications {
         position: absolute;
-        right: 20px;
-        top: 24px;
+        right: 40px;
+        top: 25px;
     }
 }
 </style>

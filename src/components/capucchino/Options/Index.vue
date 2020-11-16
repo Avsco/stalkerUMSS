@@ -6,11 +6,7 @@
                 <span>></span>
             </div>
             <div v-if="indexOne == IndexCarrerActive">
-                <div
-                    class="options_level"
-                    v-for="(valueTwo, indexTwo) in carrerActive.levels"
-                    :key="indexTwo"
-                >
+                <div class="options_level" v-for="(valueTwo, indexTwo) in carrerActive.levels" :key="indexTwo">
                     <span @click="dropLevel(indexTwo)">{{ levels.get(valueTwo.code) }}</span>
                     <div
                         class="options_subject"
@@ -107,6 +103,7 @@ export default class extends Vue {
 .options {
     border: 1px solid white;
     border-radius: $border_radius;
+    display: block;
 
     &_nameCarrer {
         padding: 1rem;

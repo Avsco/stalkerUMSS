@@ -1,8 +1,10 @@
 <template>
-    <div class="cappuchino">
-        <Options />
-        <ScheduleTable class="cappuchino_schedule" :subjectMatters="subjectsMatter" />
-    </div>
+    <main class="cappuchino">
+        <section class="cappuchino_container">
+            <ScheduleTable class="cappuchino_schedule" :subjectMatters="subjectsMatter" />
+            <Options class="cappuchino_options" />
+        </section>
+    </main>
 </template>
 
 <script lang="ts">
@@ -17,8 +19,8 @@ import { subjectMatters } from '@/classes/subjectMatter'
 @Component({
     components: {
         ScheduleTable,
-        Options,
-    },
+        Options
+    }
 })
 export default class extends Vue {
     @Getter('capucchino/subjectsMatter') readonly subjectsMatter!: subjectMatters[]
@@ -30,14 +32,32 @@ export default class extends Vue {
 @import '@/scss/abstracts/mixins.scss';
 
 .cappuchino {
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 2rem;
-    padding: 2rem;
+    &_container {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
 
     &_schedule {
-        padding-top: 3rem;
-        padding-left: 2rem;
+        margin: 2rem;
+    }
+
+    @include medium {
+        &_container {
+            grid-template-rows: 1fr;
+            grid-template-columns: 400px 1fr;
+        }
+
+        &_schedule {
+            grid-column: 1/2;
+            // grid-row: 1/2;
+        }
+
+        &_options {
+            grid-column: 2/3;
+            // grid-row: 0/1;
+        }
     }
 }
 </style>
