@@ -1,8 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import axios from 'axios'
-
-import { getUrl, concatUrl } from '@/@types/url'
+import HTTP from '@/plugins/axios'
 import { carrer, basicCarrer } from '@/@types/cappuchino'
 import { subjectMatter } from '@/classes/subjectMatter'
 
@@ -31,7 +29,7 @@ const mutations: MutationTree<State> = {
 const actions: ActionTree<State, any> = {
     actionGetCarrers: async ({ commit }: ActionContext<any, any>) => {
         try {
-            const { data } = await axios.get(getUrl())
+            const { data } = await HTTP.get('')
             const carrers: basicCarrer[] = data.map((carrer: any) => {
                 return {
                     code: carrer.code,
@@ -48,7 +46,7 @@ const actions: ActionTree<State, any> = {
 
     actionGetCarrerSelected: async ({ commit }: ActionContext<any, any>, urlCarrer: string) => {
         try {
-            const { data } = await axios.get(concatUrl(urlCarrer))
+            const { data } = await HTTP.get(urlCarrer)
             let levelsInCarrer: carrer = {
                 name: data.name,
                 levels: data.levels.map((level: any) => {

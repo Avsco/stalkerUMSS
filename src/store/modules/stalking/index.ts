@@ -1,8 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import axios from 'axios'
-
-import { concatUrl, getUrl } from '@/@types/url'
+import HTTP from '@/plugins/axios'
 
 import { scheduleItem } from '@/@types/schedule'
 import { subjectMatter, subjectMatters } from '@/classes/subjectMatter'
@@ -33,7 +31,7 @@ const actions: ActionTree<State, any> = {
             const codeCarrers = await dispatch('actionGetCodes')
             let schedulesMatter: subjectMatters = new subjectMatters()
             codeCarrers.forEach(async (code: string) => {
-                const { data } = await axios.get(concatUrl(code))
+                const { data } = await HTTP.get(code)
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
                         subject.groups.forEach((group: any) => {
@@ -60,7 +58,7 @@ const actions: ActionTree<State, any> = {
     },
     actionGetCodes: async ({}: ActionContext<any, any>): Promise<string[]> => {
         try {
-            const { data } = await axios.get(getUrl())
+            const { data } = await HTTP.get('')
             return data.map((carrer: any) => carrer.code)
         } catch (error) {
             console.error(error)
@@ -91,7 +89,7 @@ const actions: ActionTree<State, any> = {
     actionGetTeachersForCarrer: async ({}: ActionContext<any, any>, carrerCode: string): Promise<string[]> => {
         try {
             let teachers: string[] = []
-            const { data } = await axios.get(concatUrl(carrerCode))
+            const { data } = await HTTP.get(carrerCode)
             data.levels.forEach((level: any) => {
                 level.subjects.forEach((subject: any) => {
                     subject.groups.forEach((group: any) => {
@@ -108,7 +106,7 @@ const actions: ActionTree<State, any> = {
 
         //TODO: ver si el flujo de datos esta bien
         // try {
-        //     const { data } = await axios.get(concatUrl(carrerCode))
+        //     const { data } = await HTTP.get(carrerCode)
         //     return data.levels.map((level: any) =>
         //         level.subjects.map((subject: any) => subject.groups.map((group: any) => group.schedule.map((schedule: any) => schedule.teacher)))
         //     )
