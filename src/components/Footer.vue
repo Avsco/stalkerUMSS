@@ -83,7 +83,7 @@ export default class extends Vue {
         padding: 0 5px;
         list-style: none;
 
-        &:link {
+        :link {
             color: $font_color;
         }
 

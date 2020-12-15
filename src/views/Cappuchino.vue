@@ -1,8 +1,8 @@
 <template>
     <main class="cappuchino">
         <section class="cappuchino_container">
-            <ScheduleTable class="cappuchino_schedule" :subjectMatters="subjectsMatter" />
             <Options class="cappuchino_options" />
+            <ScheduleTable class="cappuchino_schedule" :subjectMatters="subjectsMatter" />
         </section>
     </main>
 </template>
@@ -33,30 +33,32 @@ export default class extends Vue {
 
 .cappuchino {
     &_container {
-        display: grid;
-        grid-template-rows: 1fr auto;
-        grid-template-columns: 1fr;
-        gap: 2rem;
+        display: flex;
+        align-items: start;
+        flex-direction: column-reverse;
     }
 
     &_schedule {
         margin: 2rem;
     }
 
+    &_options {
+        min-width: 100%;
+    }
+
     @include medium {
         &_container {
-            grid-template-rows: 1fr;
-            grid-template-columns: 400px 1fr;
+            flex-direction: row;
         }
 
         &_schedule {
-            grid-column: 2/3;
-            // grid-row: 1/2;
+            flex-grow: 3;
         }
 
         &_options {
-            grid-column: 1/2;
-            // grid-row: 0/1;
+            flex-grow: 1;
+            max-width: 400px;
+            min-width: 0;
         }
     }
 }

@@ -22,7 +22,8 @@ export default class extends Vue {
     color: string = ''
 
     mounted() {
-        this.color = this.schedules.length == 1 ? this.schedules[0].color : ''
+        // this.color = this.schedules.length == 1 ? this.schedules[0].color : ''
+        this.color = 'transparent'
     }
 }
 </script>
