@@ -1,7 +1,7 @@
 <template>
     <main class="stalker">
         <section class="stalker_container">
-            <Search class="stalker_search" :content="teachers" dispatchTo="stalking/actionSearch" />
+            <Search class="stalker_search" :content="teachers" dispatchTo="stalking/actionGetScheludes" />
             <ScheduleTable :subjectMatters="schedules" class="stalker_schedule" />
         </section>
     </main>
@@ -19,8 +19,8 @@ import { scheduleItem } from '@/@types/schedule'
 @Component({
     components: {
         Search,
-        ScheduleTable,
-    },
+        ScheduleTable
+    }
 })
 export default class extends Vue {
     @Getter('stalking/schedulesTeacher') readonly schedules!: scheduleItem[]

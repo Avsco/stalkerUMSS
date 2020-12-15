@@ -25,7 +25,6 @@ const mutations: MutationTree<State> = {
     mutationSubjectsMatter: (state, payload: subjectMatter[]) => (state.subjectsMatter = payload)
 }
 
-//TODO probar que funciona
 const actions: ActionTree<State, any> = {
     actionGetCarrers: async ({ commit }: ActionContext<any, any>) => {
         try {

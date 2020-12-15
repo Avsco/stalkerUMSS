@@ -1,11 +1,10 @@
-import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
+import { ActionContext, ActionTree, GetterTree, mapActions, MutationTree } from 'vuex'
 
 import HTTP from '@/plugins/axios'
 
 import { scheduleItem } from '@/@types/schedule'
 import { subjectMatter, subjectMatters } from '@/classes/subjectMatter'
 
-//TODO: volver el allteahcer un SET()
 class State {
     schedulesTeacher: subjectMatter[] = []
     allTeachers: string[] = []
@@ -22,10 +21,6 @@ const mutations: MutationTree<State> = {
 }
 
 const actions: ActionTree<State, any> = {
-    //TODO: deshacerse de este metodo cuando el flujo de datos vuelva
-    actionSearch: ({ dispatch }: ActionContext<any, any>, nameTeacher: string) => {
-        dispatch('actionGetScheludes', nameTeacher)
-    },
     actionGetScheludes: async ({ commit, dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         try {
             const codeCarrers = await dispatch('actionGetCodes')
@@ -88,32 +83,16 @@ const actions: ActionTree<State, any> = {
 
     actionGetTeachersForCarrer: async ({}: ActionContext<any, any>, carrerCode: string): Promise<string[]> => {
         try {
-            let teachers: string[] = []
             const { data } = await HTTP.get(carrerCode)
-            data.levels.forEach((level: any) => {
-                level.subjects.forEach((subject: any) => {
-                    subject.groups.forEach((group: any) => {
-                        group.schedule.forEach((schedule: any) => teachers.push(schedule.teacher))
-                    })
-                })
-            })
-
-            return teachers
+            return data.levels
+                .map((level: any) =>
+                    level.subjects.map((subject: any) => subject.groups.map((group: any) => group.schedule.map((schedule: any) => schedule.teacher)))
+                )
+                .flat(3)
         } catch (error) {
             console.error(error)
             return []
         }
-
-        //TODO: ver si el flujo de datos esta bien
-        // try {
-        //     const { data } = await HTTP.get(carrerCode)
-        //     return data.levels.map((level: any) =>
-        //         level.subjects.map((subject: any) => subject.groups.map((group: any) => group.schedule.map((schedule: any) => schedule.teacher)))
-        //     )
-        // } catch (error) {
-        //     console.error(error)
-        //     return []
-        // }
     }
 }
 
