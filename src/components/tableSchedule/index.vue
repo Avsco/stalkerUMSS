@@ -47,7 +47,7 @@ import { scheduleItem, scheduleCell, schedulesByDay } from '@/@types/schedule'
 import ColorManager from '@/classes/colorManager'
 import HoursManager from '@/classes/hoursManager'
 import SchedulesPerDays from '@/classes/schedulesPerDays'
-import { subjectMatter } from '@/classes/subjectMatter'
+import { subjectMatter } from '@/@types/schedule'
 
 @Component({
     components: {

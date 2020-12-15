@@ -2,7 +2,7 @@ import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import HTTP from '@/plugins/axios'
 import { carrer, basicCarrer } from '@/@types/cappuchino'
-import { subjectMatter } from '@/classes/subjectMatter'
+import { subjectMatter } from '@/@types/schedule'
 
 class State {
     carrerSelected: carrer = {

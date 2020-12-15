@@ -3,7 +3,8 @@ import { ActionContext, ActionTree, GetterTree, mapActions, MutationTree } from 
 import HTTP from '@/plugins/axios'
 
 import { scheduleItem } from '@/@types/schedule'
-import { subjectMatter, subjectMatters } from '@/classes/subjectMatter'
+import { subjectMatters } from '@/classes/subjectMatter'
+import { subjectMatter } from '@/@types/schedule'
 
 class State {
     schedulesTeacher: subjectMatter[] = []
