@@ -1,11 +1,11 @@
 class StringMatchManager {
-    public get = (searchedWord: string, wordsToCompare: string[]): string[] => {
-        const expresions = this.searchForWord(
-            searchedWord
-                .toLocaleUpperCase()
-                .split(' ')
-                .map((word) => RegExp(word))
-        )
+    public foundMatches = (searchedWord: string, wordsToCompare: string[]): string[] => {
+        const splitedSearch = searchedWord
+            .toLocaleUpperCase()
+            .split(' ')
+            .map((word) => RegExp(word))
+
+        const expresions = this.searchForWord(splitedSearch)
 
         const matchesOfWords = wordsToCompare.map((word) => expresions(word))
         const maxCountOfMatches: number = Math.max(...matchesOfWords)

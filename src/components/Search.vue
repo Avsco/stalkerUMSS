@@ -3,7 +3,7 @@
         <div class="search_bar">
             <input
                 type="search"
-                @input="verifyTeacher()"
+                @input="getMatches()"
                 autofocus
                 v-model="inputSearch"
                 :spellcheck="false"
@@ -50,13 +50,7 @@ export default class extends Vue {
     }
 
     getMatches() {
-        this.search = this.stringMatchManager.get(this.inputSearch, this.content)
-    }
-
-    //TODO: cambiar  con el gerMatches y ver si funciona
-    verifyTeacher() {
-        const expReg = RegExp(this.inputSearch.toUpperCase())
-        this.search = this.content.filter((option) => expReg.test(option))
+        this.search = this.stringMatchManager.foundMatches(this.inputSearch, this.content)
     }
 
     fillInput(option: string) {
