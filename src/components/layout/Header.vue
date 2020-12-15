@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
-import Notifications from '@/components/Notifications.vue'
+import Notifications from './Notifications.vue'
 
 @Component({
     components: {

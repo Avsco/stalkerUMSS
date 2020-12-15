@@ -9,14 +9,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import Footer from '@/components/Footer.vue'
-import Header from '@/components/Header.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Header from '@/components/layout/Header.vue'
 
 @Component({
     components: {
         Header,
-        Footer,
-    },
+        Footer
+    }
 })
 export default class extends Vue {}
 </script>
