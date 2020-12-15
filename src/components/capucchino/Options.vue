@@ -50,8 +50,8 @@ import { Getter } from 'vuex-class'
 
 import { basicCarrer, carrer } from '@/@types/cappuchino'
 
-import { subjectMatter } from '@/classes/subjectMatter'
-import LevelHash from '@/classes/levelsHash'
+import { subjectMatter } from '@/@types/schedule'
+import LevelHash from '@/classes/levelHash'
 
 @Component({})
 export default class extends Vue {
@@ -101,7 +101,7 @@ export default class extends Vue {
 @import '@/scss/abstracts/_variables.scss';
 
 .options {
-    // border: 1px solid white;
+    border: 1px solid white;
     border-radius: $border_radius;
     display: block;
 
@@ -110,7 +110,7 @@ export default class extends Vue {
         background-color: $primary_color;
         display: flex;
         justify-content: space-between;
-        // border: 1px solid white;
+        border: 1px solid white;
         cursor: pointer;
 
         span {
@@ -121,7 +121,7 @@ export default class extends Vue {
     &_level {
         padding: 10px;
         padding-left: 1.5rem;
-        // border: 1px solid white;
+        border: 1px solid white;
     }
 
     &_subject {
@@ -130,7 +130,7 @@ export default class extends Vue {
         > div {
             display: flex;
             justify-content: space-between;
-            // border: 1px solid white;
+            border: 1px solid white;
         }
     }
 

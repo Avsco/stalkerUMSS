@@ -1,10 +1,4 @@
-import { scheduleItem } from '@/@types/schedule'
-
-export interface subjectMatter {
-    subjectName: string
-    groupCode: string
-    schedules: scheduleItem[]
-}
+import { subjectMatter } from '@/@types/schedule'
 
 export class subjectMatters {
     private subjectMatters: subjectMatter[] = []

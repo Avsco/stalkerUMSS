@@ -22,3 +22,9 @@ export interface schedulesByDay {
     day: string
     schedules: scheduleCell[]
 }
+
+export interface subjectMatter {
+    subjectName: string
+    groupCode: string
+    schedules: scheduleItem[]
+}
