@@ -11,10 +11,10 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
-import ScheduleTable from '@/components/tableSchedule/index.vue'
+import ScheduleTable from '@/components/scheduleTable/ScheduleTable.vue'
 import Options from '@/components/capucchino/Options.vue'
 
-import { subjectMatters } from '@/classes/subjectMatter'
+import SubjectMatters from '@/classes/subjectMatter'
 
 @Component({
     components: {
@@ -23,23 +23,24 @@ import { subjectMatters } from '@/classes/subjectMatter'
     }
 })
 export default class extends Vue {
-    @Getter('capucchino/subjectsMatter') readonly subjectsMatter!: subjectMatters[]
+    @Getter('capucchino/subjectsMatter') readonly subjectsMatter!: SubjectMatters[]
 }
 </script>
 
 <style lang="scss">
-@import '@/scss/abstracts/variables.scss';
 @import '@/scss/abstracts/mixins.scss';
 
 .cappuchino {
     &_container {
         display: flex;
-        align-items: start;
+        align-items: flex-start;
         flex-direction: column-reverse;
+        overflow-x: auto;
     }
 
     &_schedule {
         margin: 2rem;
+        width: calc(100%);
     }
 
     &_options {
@@ -49,10 +50,13 @@ export default class extends Vue {
     @include medium {
         &_container {
             flex-direction: row;
+            overflow: none;
         }
 
         &_schedule {
             flex-grow: 3;
+            overflow-x: none;
+            width: 0;
         }
 
         &_options {

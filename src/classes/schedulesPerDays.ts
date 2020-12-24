@@ -1,9 +1,9 @@
-import { schedulesByDay, scheduleCell } from '@/@types/schedule'
+import { SchedulesByDay, ScheduleCell } from '@/@types/schedule'
 import HoursManager from './hoursManager'
 import ScheduleShredder from './scheduleShredder'
 
 class SchedulesByDays {
-    private schedulesByDays: schedulesByDay[] = []
+    private schedulesByDays: SchedulesByDay[] = []
     private hours: HoursManager
     private scheduleShredder: ScheduleShredder
 
@@ -17,8 +17,8 @@ class SchedulesByDays {
         this.scheduleShredder = new ScheduleShredder(this.hours)
     }
 
-    public addSchedule = (schedule: scheduleCell): void => {
-        const schedulesDay: schedulesByDay = this.schedulesByDays.filter((schedulesByDay) => this.compareDay(schedulesByDay.day, schedule.day))[0]
+    public addSchedule = (schedule: ScheduleCell): void => {
+        const schedulesDay: SchedulesByDay = this.schedulesByDays.filter((schedulesByDay) => this.compareDay(schedulesByDay.day, schedule.day))[0]
         this.schedulesByDays = this.schedulesByDays.filter((schedulesByDay) => !this.compareDay(schedulesByDay.day, schedule.day))
         const schedulesOrganized = this.scheduleShredder.pushSchedule(schedulesDay.schedules, schedule)
         schedulesDay.schedules = schedulesOrganized
@@ -33,7 +33,7 @@ class SchedulesByDays {
         })
     }
 
-    public getSchedules = (day: string, indexHour: number): scheduleCell[] =>
+    public getSchedules = (day: string, indexHour: number): ScheduleCell[] =>
         this.filterByDay(day).schedules.filter((scheduleByDay) => this.hours.compareHour(indexHour, scheduleByDay.start))
 
     public schedulesInRange = (day: string, indexHour: number): boolean =>

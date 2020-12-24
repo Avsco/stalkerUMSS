@@ -42,12 +42,12 @@ import { Getter } from 'vuex-class'
 
 import ScheduleTableItem from './ScheduleTableItem.vue'
 
-import { scheduleItem, scheduleCell, schedulesByDay } from '@/@types/schedule'
+import { ScheduleItem } from '@/@types/schedule'
 
 import ColorManager from '@/classes/colorManager'
 import HoursManager from '@/classes/hoursManager'
 import SchedulesPerDays from '@/classes/schedulesPerDays'
-import { subjectMatter } from '@/@types/schedule'
+import { SubjectMatter } from '@/@types/schedule'
 
 @Component({
     components: {
@@ -55,7 +55,7 @@ import { subjectMatter } from '@/@types/schedule'
     }
 })
 export default class extends Vue {
-    @Prop({ required: true }) subjectMatters!: subjectMatter[]
+    @Prop({ required: true }) subjectMatters!: SubjectMatter[]
     colors: ColorManager = new ColorManager()
     days: string[] = ['', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
     hours: HoursManager = new HoursManager()
@@ -64,8 +64,8 @@ export default class extends Vue {
     @Watch('subjectMatters')
     onChildChanged() {
         this.schedulesPerDay.dropSchedules()
-        this.subjectMatters.forEach((subjectMatter: subjectMatter, index) => {
-            subjectMatter.schedules.forEach((schedule: scheduleItem) => {
+        this.subjectMatters.forEach((subjectMatter: SubjectMatter, index) => {
+            subjectMatter.schedules.forEach((schedule: ScheduleItem) => {
                 this.schedulesPerDay.addSchedule({
                     color: this.colors.getColor(index),
                     groupCode: subjectMatter.groupCode,

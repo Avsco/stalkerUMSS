@@ -1,4 +1,4 @@
-import { scheduleCell } from '@/@types/schedule'
+import { ScheduleCell } from '@/@types/schedule'
 import HoursManager from './hoursManager'
 
 // TODO completar implementacion
@@ -10,8 +10,8 @@ class ScheduleShredder {
     }
     //si a es mayor es porque tenemos que dividir a los conflictiveSchedules al tamanio del new
     //si b es mayor es porque tenemos que dividir el new al tamanio de los conflictiveSchedules
-    private fragmentSchedules = (newSchedule: scheduleCell, conflictiveSchedules: scheduleCell[]): scheduleCell[] => {
-        let schedulesOrganized: scheduleCell[] = []
+    private fragmentSchedules = (newSchedule: ScheduleCell, conflictiveSchedules: ScheduleCell[]): ScheduleCell[] => {
+        let schedulesOrganized: ScheduleCell[] = []
         const c = conflictiveSchedules.filter((schedule) => newSchedule.end == schedule.end)
         const a = conflictiveSchedules.filter((schedule) => newSchedule.end < schedule.end)
         const b = conflictiveSchedules.filter((schedule) => newSchedule.end > schedule.end)
@@ -23,22 +23,22 @@ class ScheduleShredder {
         return schedulesOrganized
     }
 
-    public pushSchedule = (oldSchedules: scheduleCell[], newSchedule: scheduleCell): scheduleCell[] => {
-        let schedules: scheduleCell[]
+    public pushSchedule = (oldSchedules: ScheduleCell[], newSchedule: ScheduleCell): ScheduleCell[] => {
+        let schedules: ScheduleCell[]
         const conflictiveSchedules = oldSchedules.filter((schedule) => this.hours.inRange(newSchedule.start, newSchedule.end, schedule.start))
         conflictiveSchedules.length > 0 ? (schedules = this.fragmentSchedules(newSchedule, conflictiveSchedules)) : (schedules = [...oldSchedules, newSchedule])
         return schedules
     }
 
-    private divideConflictivesSchedules = (divisionTime: string, conflictiveSchedules: scheduleCell[]): scheduleCell[] => {
+    private divideConflictivesSchedules = (divisionTime: string, conflictiveSchedules: ScheduleCell[]): ScheduleCell[] => {
         return conflictiveSchedules
     }
 
-    private divideNewSchedule = (newSchedule: scheduleCell, divisionTime: string): scheduleCell => {
+    private divideNewSchedule = (newSchedule: ScheduleCell, divisionTime: string): ScheduleCell => {
         return newSchedule
     }
 
-    private getMinEndTime = (schedules: scheduleCell[]): string => {
+    private getMinEndTime = (schedules: ScheduleCell[]): string => {
         let minTime: number = this.hours.getLenght()
         schedules.forEach((schedule) => {
             if (this.hours.indexOf(schedule.end) < minTime) minTime = this.hours.getIndex(schedule.end)

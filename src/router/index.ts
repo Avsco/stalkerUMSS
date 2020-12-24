@@ -14,12 +14,12 @@ const router = new VueRouter({
             children: [
                 {
                     path: '',
-                    name: 'Docentes',
+                    name: 'Stalker',
                     component: () => import('@/views/Stalker.vue')
                 },
                 {
-                    path: 'capucchino',
-                    name: 'Horario',
+                    path: 'cappuchino',
+                    name: 'Capuchino',
                     component: () => import('@/views/Cappuchino.vue')
                 }
             ]

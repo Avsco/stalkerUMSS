@@ -1,4 +1,4 @@
-export interface scheduleCell {
+export interface ScheduleCell {
     color: string
     groupCode: string
     duration: number
@@ -9,7 +9,7 @@ export interface scheduleCell {
     end: string
 }
 
-export interface scheduleItem {
+export interface ScheduleItem {
     day: string
     start: string
     end: string
@@ -18,13 +18,13 @@ export interface scheduleItem {
     teacher: string
 }
 
-export interface schedulesByDay {
+export interface SchedulesByDay {
     day: string
-    schedules: scheduleCell[]
+    schedules: ScheduleCell[]
 }
 
-export interface subjectMatter {
+export interface SubjectMatter {
     subjectName: string
     groupCode: string
-    schedules: scheduleItem[]
+    schedules: ScheduleItem[]
 }

@@ -12,9 +12,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
 import Search from '@/components/Search.vue'
-import ScheduleTable from '@/components/tableSchedule/index.vue'
+import ScheduleTable from '@/components/scheduleTable/ScheduleTable.vue'
 
-import { scheduleItem } from '@/@types/schedule'
+import { ScheduleItem } from '@/@types/schedule'
 
 @Component({
     components: {
@@ -23,7 +23,7 @@ import { scheduleItem } from '@/@types/schedule'
     }
 })
 export default class extends Vue {
-    @Getter('stalking/schedulesTeacher') readonly schedules!: scheduleItem[]
+    @Getter('stalking/schedulesTeacher') readonly schedules!: ScheduleItem[]
     @Getter('stalking/allTeachers') readonly teachers!: string[]
 
     async mounted() {

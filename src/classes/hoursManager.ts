@@ -1,4 +1,4 @@
-class hoursManager {
+class HoursManager {
     private data: string[] = [
         '645',
         '730',
@@ -46,4 +46,4 @@ class hoursManager {
     public indexOf = (hour: string) => this.data.indexOf(hour)
 }
 
-export default hoursManager
+export default HoursManager
