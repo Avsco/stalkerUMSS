@@ -48,7 +48,6 @@ const actions: ActionTree<State, any> = {
             })
             commit('mutationSchedules', schedulesMatter.getSubjectMatters())
         } catch (error) {
-            console.error(error)
             commit('mutationSchedules', [])
         }
     },
@@ -57,7 +56,6 @@ const actions: ActionTree<State, any> = {
             const { data } = await HTTP.get('')
             return data.map((carrer: any) => carrer.code)
         } catch (error) {
-            console.error(error)
             return []
         }
     },
@@ -77,7 +75,6 @@ const actions: ActionTree<State, any> = {
 
             commit('mutationAllTeachers', teachers)
         } catch (error) {
-            console.error(error)
             commit('mutationAllTeachers', [])
         }
     },
@@ -91,7 +88,6 @@ const actions: ActionTree<State, any> = {
                 )
                 .flat(3)
         } catch (error) {
-            console.error(error)
             return []
         }
     }

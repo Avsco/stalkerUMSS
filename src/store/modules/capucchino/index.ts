@@ -38,7 +38,6 @@ const actions: ActionTree<State, any> = {
 
             commit('mutationCarrers', carrers)
         } catch (error) {
-            console.error(error)
             commit('mutationCarrers', [])
         }
     },
@@ -69,7 +68,6 @@ const actions: ActionTree<State, any> = {
 
             commit('mutationCarrerSelected', levelsInCarrer)
         } catch (error) {
-            console.error(error)
             commit('mutationCarrerSelected', [])
         }
     }
