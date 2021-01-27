@@ -1,16 +1,16 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import HTTP from '@/plugins/axios'
-import { carrer, basicCarrer } from '@/@types/cappuchino'
-import { subjectMatter } from '@/@types/schedule'
+import { Carrer, BasicCarrer } from '@/@types/cappuchino'
+import { SubjectMatter } from '@/@types/schedule'
 
 class State {
-    carrerSelected: carrer = {
+    carrerSelected: Carrer = {
         name: 'undefined',
         levels: []
     }
-    carrers: basicCarrer[] = []
-    subjectsMatter: subjectMatter[] = []
+    carrers: BasicCarrer[] = []
+    subjectsMatter: SubjectMatter[] = []
 }
 
 const getters: GetterTree<State, any> = {
@@ -20,16 +20,16 @@ const getters: GetterTree<State, any> = {
 }
 
 const mutations: MutationTree<State> = {
-    mutationCarrerSelected: (state, payload: carrer) => (state.carrerSelected = payload),
-    mutationCarrers: (state, payload: basicCarrer[]) => (state.carrers = payload),
-    mutationSubjectsMatter: (state, payload: subjectMatter[]) => (state.subjectsMatter = payload)
+    mutationCarrerSelected: (state, payload: Carrer) => (state.carrerSelected = payload),
+    mutationCarrers: (state, payload: BasicCarrer[]) => (state.carrers = payload),
+    mutationSubjectsMatter: (state, payload: SubjectMatter[]) => (state.subjectsMatter = payload)
 }
 
 const actions: ActionTree<State, any> = {
     actionGetCarrers: async ({ commit }: ActionContext<any, any>) => {
         try {
             const { data } = await HTTP.get('')
-            const carrers: basicCarrer[] = data.map((carrer: any) => {
+            const carrers: BasicCarrer[] = data.map((carrer: any) => {
                 return {
                     code: carrer.code,
                     name: carrer.name
@@ -46,7 +46,7 @@ const actions: ActionTree<State, any> = {
     actionGetCarrerSelected: async ({ commit }: ActionContext<any, any>, urlCarrer: string) => {
         try {
             const { data } = await HTTP.get(urlCarrer)
-            let levelsInCarrer: carrer = {
+            let levelsInCarrer: Carrer = {
                 name: data.name,
                 levels: data.levels.map((level: any) => {
                     return {

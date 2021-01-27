@@ -5,7 +5,7 @@
                 <ul class="footer_links">
                     <li class="footer_link" v-for="(value, index) in links" :key="index">
                         <a :href="value.route" target="_blank" :hreflang="value.alt">
-                            <SystemIcons :icon="value.alt" />
+                            <BaseSystemIcons :icon="value.alt" />
                         </a>
                     </li>
                 </ul>
@@ -18,11 +18,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
-import SystemIcons from '@/components/SystemIcons.vue'
+import BaseSystemIcons from '@/components/BaseSystemIcons.vue'
 
 @Component({
     components: {
-        SystemIcons
+        BaseSystemIcons
     }
 })
 export default class extends Vue {

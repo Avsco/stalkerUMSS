@@ -1,13 +1,13 @@
-import { ActionContext, ActionTree, GetterTree, mapActions, MutationTree } from 'vuex'
+import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import HTTP from '@/plugins/axios'
 
-import { scheduleItem } from '@/@types/schedule'
-import { subjectMatters } from '@/classes/subjectMatter'
-import { subjectMatter } from '@/@types/schedule'
+import { ScheduleItem } from '@/@types/schedule'
+import SubjectMatters from '@/classes/subjectMatter'
+import { SubjectMatter } from '@/@types/schedule'
 
 class State {
-    schedulesTeacher: subjectMatter[] = []
+    schedulesTeacher: SubjectMatter[] = []
     allTeachers: string[] = []
 }
 
@@ -17,7 +17,7 @@ const getters: GetterTree<State, any> = {
 }
 
 const mutations: MutationTree<State> = {
-    mutationSchedules: (state, payload: subjectMatter[]) => (state.schedulesTeacher = payload),
+    mutationSchedules: (state, payload: SubjectMatter[]) => (state.schedulesTeacher = payload),
     mutationAllTeachers: (state, payload: string[]) => (state.allTeachers = payload)
 }
 
@@ -25,14 +25,14 @@ const actions: ActionTree<State, any> = {
     actionGetScheludes: async ({ commit, dispatch }: ActionContext<any, any>, nameTeacher: string) => {
         try {
             const codeCarrers = await dispatch('actionGetCodes')
-            let schedulesMatter: subjectMatters = new subjectMatters()
+            let schedulesMatter: SubjectMatters = new SubjectMatters()
             codeCarrers.forEach(async (code: string) => {
                 const { data } = await HTTP.get(code)
                 data.levels.forEach((level: any) => {
                     level.subjects.forEach((subject: any) => {
                         subject.groups.forEach((group: any) => {
-                            let schedules: scheduleItem[] = []
-                            group.schedule.forEach((schedule: scheduleItem) => {
+                            let schedules: ScheduleItem[] = []
+                            group.schedule.forEach((schedule: ScheduleItem) => {
                                 if (schedule.teacher === nameTeacher) {
                                     schedules.push(schedule)
                                 }

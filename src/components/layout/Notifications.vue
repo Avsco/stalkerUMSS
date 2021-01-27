@@ -1,18 +1,18 @@
 <template>
     <span class="notifications">
-        <SystemIcons icon="bell" />
+        <BaseSystemIcons icon="bell" />
     </span>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import SystemIcons from '@/components/SystemIcons.vue'
+import BaseSystemIcons from '@/components/BaseSystemIcons.vue'
 
 @Component({
     components: {
-        SystemIcons,
-    },
+        BaseSystemIcons
+    }
 })
 export default class extends Vue {}
 </script>

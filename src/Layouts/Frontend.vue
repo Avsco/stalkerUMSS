@@ -1,21 +1,21 @@
 <template>
     <div class="frontend">
-        <Header />
+        <BaseHeader />
         <router-view />
-        <Footer />
+        <BaseFooter />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import Footer from '@/components/layout/Footer.vue'
-import Header from '@/components/layout/Header.vue'
+import BaseFooter from '@/components/layout/BaseFooter.vue'
+import BaseHeader from '@/components/layout/BaseHeader.vue'
 
 @Component({
     components: {
-        Header,
-        Footer
+        BaseHeader,
+        BaseFooter
     }
 })
 export default class extends Vue {}

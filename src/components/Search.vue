@@ -10,7 +10,7 @@
                 placeholder="Ingresa el nombre del docente a buscar"
             />
             <button class="search_button" @click="sendMatch()">
-                <SystemIcons icon="search" />
+                <BaseSystemIcons icon="search" />
             </button>
         </div>
         <ul class="search_options" v-show="search.length > 0">
@@ -26,13 +26,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
-import SystemIcons from '@/components/SystemIcons.vue'
+import BaseSystemIcons from '@/components/BaseSystemIcons.vue'
 
 import StringMatchManager from '@/classes/StringMatchManager'
 
 @Component({
     components: {
-        SystemIcons
+        BaseSystemIcons
     }
 })
 export default class extends Vue {

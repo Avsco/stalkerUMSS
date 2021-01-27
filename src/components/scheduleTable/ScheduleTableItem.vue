@@ -14,11 +14,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
-import { scheduleCell } from '@/@types/schedule'
+import { ScheduleCell } from '@/@types/schedule'
 
 @Component({})
 export default class extends Vue {
-    @Prop({ required: true }) schedules!: scheduleCell[]
+    @Prop({ required: true }) schedules!: ScheduleCell[]
     color: string = ''
 
     mounted() {

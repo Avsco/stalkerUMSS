@@ -1,9 +1,9 @@
-import { subjectMatter } from '@/@types/schedule'
+import { SubjectMatter } from '@/@types/schedule'
 
-export class subjectMatters {
-    private subjectMatters: subjectMatter[] = []
+class SubjectMatters {
+    private subjectMatters: SubjectMatter[] = []
 
-    add(subjectMatterOne: subjectMatter) {
+    add(subjectMatterOne: SubjectMatter) {
         if (this.subjectMatters.length == 0 && subjectMatterOne.schedules.length > 0) this.subjectMatters.push(subjectMatterOne)
         else {
             if (subjectMatterOne.schedules.length > 0) {
@@ -16,8 +16,10 @@ export class subjectMatters {
         }
     }
 
-    public getSubjectMatters = (): subjectMatter[] => this.subjectMatters
+    public getSubjectMatters = (): SubjectMatter[] => this.subjectMatters
 
-    private isRepeated = (subjectMatterOne: subjectMatter, subjectMatterTwo: subjectMatter) =>
+    private isRepeated = (subjectMatterOne: SubjectMatter, subjectMatterTwo: SubjectMatter) =>
         subjectMatterTwo.groupCode == subjectMatterOne.groupCode && subjectMatterTwo.subjectName == subjectMatterOne.subjectName
 }
+
+export default SubjectMatters

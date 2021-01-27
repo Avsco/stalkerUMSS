@@ -48,19 +48,19 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
-import { basicCarrer, carrer } from '@/@types/cappuchino'
+import { BasicCarrer, Carrer } from '@/@types/cappuchino'
 
-import { subjectMatter } from '@/@types/schedule'
+import { SubjectMatter } from '@/@types/schedule'
 import LevelHash from '@/classes/levelHash'
 
 @Component({})
 export default class extends Vue {
-    @Getter('capucchino/carrers') readonly carrers!: basicCarrer[]
-    @Getter('capucchino/carrerSelected') readonly carrerActive!: carrer
+    @Getter('capucchino/carrers') readonly carrers!: BasicCarrer[]
+    @Getter('capucchino/carrerSelected') readonly carrerActive!: Carrer
     IndexCarrerActive: number = -1
     activeLevels: number[] = []
     levels: LevelHash = new LevelHash()
-    subjectsMatter: subjectMatter[] = []
+    subjectsMatter: SubjectMatter[] = []
 
     @Watch('IndexCarrerActive')
     onIndexCarrerActive() {
@@ -76,7 +76,7 @@ export default class extends Vue {
         this.$store.dispatch('capucchino/actionGetCarrers')
     }
 
-    async showCarrer(index: number, value: basicCarrer) {
+    async showCarrer(index: number, value: BasicCarrer) {
         this.$store.dispatch('capucchino/actionGetCarrerSelected', value.code)
         if (this.IndexCarrerActive != index) this.IndexCarrerActive = index
         else this.IndexCarrerActive = -1
@@ -87,7 +87,7 @@ export default class extends Vue {
         else this.activeLevels.push(index)
     }
 
-    getSubjectMatter(level: number, subject: number, group: number): subjectMatter {
+    getSubjectMatter(level: number, subject: number, group: number): SubjectMatter {
         return {
             subjectName: this.carrerActive.levels[level].subjects[subject].name,
             groupCode: this.carrerActive.levels[level].subjects[subject].groups[group].code,
