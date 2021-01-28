@@ -14,7 +14,8 @@ export default class LevelsMap {
         this.levels.set('J', 'Semestre 10')
     }
 
-    public get(key: string) {
-        return this.levels.get(key)
+    get(key: string): string {
+        const level: string | undefined = this.levels.get(key)
+        return level ? level : 'Not registered'
     }
 }

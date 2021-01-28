@@ -1,24 +1,27 @@
 import { SubjectMatter } from '@/@types/schedule'
 
 class SubjectMatters {
-    private subjectMatters: SubjectMatter[] = []
+    private subjectMatters: SubjectMatter[]
 
-    add(subjectMatterOne: SubjectMatter) {
+    constructor() {
+        this.subjectMatters = []
+    }
+
+    add(subjectMatterOne: SubjectMatter): void {
         if (this.subjectMatters.length == 0 && subjectMatterOne.schedules.length > 0) this.subjectMatters.push(subjectMatterOne)
         else {
             if (subjectMatterOne.schedules.length > 0) {
-                let isHere = false
-                this.subjectMatters.forEach((subjectMatterTwo) => {
-                    if (this.isRepeated(subjectMatterOne, subjectMatterTwo)) isHere = true
+                let isHere: SubjectMatter | undefined = this.subjectMatters.find((subjectMatterTwo) => {
+                    this.isRepeated(subjectMatterOne, subjectMatterTwo)
                 })
                 if (!isHere) this.subjectMatters.push(subjectMatterOne)
             }
         }
     }
 
-    public getSubjectMatters = (): SubjectMatter[] => this.subjectMatters
+    getSubjectMatters = (): SubjectMatter[] => this.subjectMatters
 
-    private isRepeated = (subjectMatterOne: SubjectMatter, subjectMatterTwo: SubjectMatter) =>
+    private isRepeated = (subjectMatterOne: SubjectMatter, subjectMatterTwo: SubjectMatter): boolean =>
         subjectMatterTwo.groupCode == subjectMatterOne.groupCode && subjectMatterTwo.subjectName == subjectMatterOne.subjectName
 }
 

@@ -68,16 +68,16 @@ export default class extends Vue {
     }
 
     @Watch('subjectsMatter')
-    async onSubjectsMatter() {
+    onSubjectsMatter() {
         this.$store.commit('capucchino/mutationSubjectsMatter', this.subjectsMatter)
     }
 
     async mounted() {
-        this.$store.dispatch('capucchino/actionGetCarrers')
+        await this.$store.dispatch('capucchino/actionGetCarrers')
     }
 
     async showCarrer(index: number, value: BasicCarrer) {
-        this.$store.dispatch('capucchino/actionGetCarrerSelected', value.code)
+        await this.$store.dispatch('capucchino/actionGetCarrerSelected', value.code)
         if (this.IndexCarrerActive != index) this.IndexCarrerActive = index
         else this.IndexCarrerActive = -1
     }

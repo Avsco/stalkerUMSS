@@ -36,6 +36,7 @@ export default class extends Vue {
     text-align: center;
     margin: none;
     padding: none;
+    line-height: 15px;
 
     &_error {
         div {

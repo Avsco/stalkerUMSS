@@ -12,20 +12,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(valueOne, indexOne) in hours.dataForHTML()" :key="indexOne">
-                    <template v-for="(valueTwo, indexTwo) in days">
-                        <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
-                            <span>{{ valueOne }}</span>
-                        </td>
-                        <ScheduleTableItem
-                            v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
-                            :key="indexTwo"
-                            :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
-                            class="table_cell"
-                        />
-                        <td v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)" :key="indexTwo" class="table_cell"></td>
-                    </template>
-                </tr>
+                <template v-for="(valueOne, indexOne) in hours.dataForHTML()">
+                    <tr :key="indexOne">
+                        <template v-for="(valueTwo, indexTwo) in days">
+                            <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
+                                <span>{{ valueOne }}</span>
+                            </td>
+                            <ScheduleTableItem
+                                v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
+                                :key="indexTwo"
+                                :schedules="schedulesPerDay.getSchedules(valueTwo, indexOne)"
+                                class="table_cell"
+                            />
+                            <td v-else-if="schedulesPerDay.schedulesInRange(valueTwo, indexOne)" :key="indexTwo" class="table_cell"></td>
+                        </template>
+                    </tr>
+                </template>
                 <tr>
                     <td class="table_hours">
                         <span>{{ hours.convert(hours.getValue(hours.data.length - 1)) }}</span>
@@ -38,7 +40,6 @@
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
 
 import ScheduleTableItem from './ScheduleTableItem.vue'
 
@@ -59,14 +60,12 @@ export default class extends Vue {
     colors: ColorManager = new ColorManager()
     days: string[] = ['', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
     hours: HoursManager = new HoursManager()
-    schedulesPerDay: SchedulesPerDays = new SchedulesPerDays(this.days, this.hours)
 
-    @Watch('subjectMatters')
-    onChildChanged() {
-        this.schedulesPerDay.dropSchedules()
+    get schedulesPerDay(): SchedulesPerDays {
+        const schedulesPerDays = new SchedulesPerDays(this.days, this.hours)
         this.subjectMatters.forEach((subjectMatter: SubjectMatter, index) => {
-            subjectMatter.schedules.forEach((schedule: ScheduleItem) => {
-                this.schedulesPerDay.addSchedule({
+            subjectMatter.schedules.map((schedule: ScheduleItem) => {
+                schedulesPerDays.addSchedule({
                     color: this.colors.getColor(index),
                     groupCode: subjectMatter.groupCode,
                     duration: schedule.duration,
@@ -78,6 +77,8 @@ export default class extends Vue {
                 })
             })
         })
+
+        return schedulesPerDays
     }
 }
 </script>

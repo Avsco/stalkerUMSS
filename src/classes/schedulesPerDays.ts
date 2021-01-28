@@ -17,29 +17,33 @@ class SchedulesByDays {
         this.scheduleShredder = new ScheduleShredder(this.hours)
     }
 
-    public addSchedule = (schedule: ScheduleCell): void => {
-        const schedulesDay: SchedulesByDay = this.schedulesByDays.filter((schedulesByDay) => this.compareDay(schedulesByDay.day, schedule.day))[0]
-        this.schedulesByDays = this.schedulesByDays.filter((schedulesByDay) => !this.compareDay(schedulesByDay.day, schedule.day))
-        const schedulesOrganized = this.scheduleShredder.pushSchedule(schedulesDay.schedules, schedule)
-        schedulesDay.schedules = schedulesOrganized
-        this.schedulesByDays.push(schedulesDay)
+    addSchedule = (schedule: ScheduleCell): void => {
+        const schedulesDay: SchedulesByDay | undefined = this.schedulesByDays.find((schedulesByDay) => this.compareDay(schedulesByDay.day, schedule.day))
+
+        if (schedulesDay) {
+            this.schedulesByDays = this.schedulesByDays.filter((schedulesByDay) => !this.compareDay(schedulesByDay.day, schedule.day))
+
+            const schedulesOrganized: ScheduleCell[] = this.scheduleShredder.pushSchedule(schedulesDay.schedules, schedule)
+            schedulesDay.schedules = schedulesOrganized
+            this.schedulesByDays.push(schedulesDay)
+        }
     }
 
-    private compareDay = (day: string, scheduleDay: string) => day.slice(0, 2).toLocaleUpperCase() == scheduleDay
+    private compareDay = (day: string, scheduleDay: string): boolean => day.slice(0, 2).toLocaleUpperCase() == scheduleDay
 
-    public dropSchedules = (): void => {
-        this.schedulesByDays = this.schedulesByDays.map((schedulesByDay) => {
-            return { day: schedulesByDay.day, schedules: [] }
-        })
+    getSchedules(day: string, indexHour: number): ScheduleCell[] {
+        const filteredDay: SchedulesByDay | undefined = this.filterByDay(day)
+        return filteredDay ? filteredDay.schedules.filter((scheduleByDay) => this.hours.compareHour(indexHour, scheduleByDay.start)) : []
     }
 
-    public getSchedules = (day: string, indexHour: number): ScheduleCell[] =>
-        this.filterByDay(day).schedules.filter((scheduleByDay) => this.hours.compareHour(indexHour, scheduleByDay.start))
+    schedulesInRange(day: string, indexHour: number): boolean {
+        const filteredDay: SchedulesByDay | undefined = this.filterByDay(day)
+        return filteredDay
+            ? filteredDay.schedules.filter((scheduleByDay) => this.hours.IndexInRange(scheduleByDay.start, scheduleByDay.end, indexHour)).length <= 0
+            : false
+    }
 
-    public schedulesInRange = (day: string, indexHour: number): boolean =>
-        this.filterByDay(day).schedules.filter((scheduleByDay) => this.hours.IndexInRange(scheduleByDay.start, scheduleByDay.end, indexHour)).length <= 0
-
-    private filterByDay = (scheduleDay: string) => this.schedulesByDays.filter((schedulesByDay) => scheduleDay == schedulesByDay.day)[0]
+    private filterByDay = (scheduleDay: string): SchedulesByDay | undefined => this.schedulesByDays.find((schedulesByDay) => scheduleDay == schedulesByDay.day)
 }
 
 export default SchedulesByDays

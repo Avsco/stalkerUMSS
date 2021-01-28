@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
 import Notifications from './Notifications.vue'
 
@@ -24,7 +24,6 @@ export default class extends Vue {}
 @import '@/scss/abstracts/variables.scss';
 
 .header {
-    // position: relative;
     width: 100%;
     height: 100%;
     background-color: $primary_color;

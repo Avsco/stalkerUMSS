@@ -1,5 +1,5 @@
 class StringMatchManager {
-    public foundMatches = (searchedWord: string, wordsToCompare: string[]): string[] => {
+    foundMatches(searchedWord: string, wordsToCompare: string[]): string[] {
         const splitedSearch = searchedWord
             .toLocaleUpperCase()
             .split(' ')

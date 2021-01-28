@@ -23,7 +23,7 @@ class ScheduleShredder {
         return schedulesOrganized
     }
 
-    public pushSchedule = (oldSchedules: ScheduleCell[], newSchedule: ScheduleCell): ScheduleCell[] => {
+    pushSchedule(oldSchedules: ScheduleCell[], newSchedule: ScheduleCell): ScheduleCell[] {
         let schedules: ScheduleCell[]
         const conflictiveSchedules = oldSchedules.filter((schedule) => this.hours.inRange(newSchedule.start, newSchedule.end, schedule.start))
         conflictiveSchedules.length > 0 ? (schedules = this.fragmentSchedules(newSchedule, conflictiveSchedules)) : (schedules = [...oldSchedules, newSchedule])
@@ -38,7 +38,7 @@ class ScheduleShredder {
         return newSchedule
     }
 
-    private getMinEndTime = (schedules: ScheduleCell[]): string => {
+    private getMinEndTime(schedules: ScheduleCell[]): string {
         let minTime: number = this.hours.getLenght()
         schedules.forEach((schedule) => {
             if (this.hours.indexOf(schedule.end) < minTime) minTime = this.hours.getIndex(schedule.end)
