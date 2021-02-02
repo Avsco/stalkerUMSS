@@ -18,32 +18,41 @@ class SchedulesByDays {
     }
 
     addSchedule = (schedule: ScheduleCell): void => {
-        const schedulesDay: SchedulesByDay | undefined = this.schedulesByDays.find((schedulesByDay) => this.compareDay(schedulesByDay.day, schedule.day))
+        const scheduleDay: SchedulesByDay = this.schedulesByDays.filter((schedulesByDay) => this.compareDay(schedulesByDay.day, schedule.day))[0]
+        const isRepeated = this.compareSchedules(scheduleDay.schedules, schedule)
 
-        if (schedulesDay) {
+        if (!isRepeated) {
             this.schedulesByDays = this.schedulesByDays.filter((schedulesByDay) => !this.compareDay(schedulesByDay.day, schedule.day))
-
-            const schedulesOrganized: ScheduleCell[] = this.scheduleShredder.pushSchedule(schedulesDay.schedules, schedule)
-            schedulesDay.schedules = schedulesOrganized
-            this.schedulesByDays.push(schedulesDay)
+            //TODO: verificar que no se repitan los mismo horarios
+            const schedulesOrganized = this.scheduleShredder.pushSchedule(scheduleDay.schedules, schedule)
+            scheduleDay.schedules = schedulesOrganized
+            this.schedulesByDays.push(scheduleDay)
         }
     }
 
     private compareDay = (day: string, scheduleDay: string): boolean => day.slice(0, 2).toLocaleUpperCase() == scheduleDay
 
     getSchedules(day: string, indexHour: number): ScheduleCell[] {
-        const filteredDay: SchedulesByDay | undefined = this.filterByDay(day)
+        const filteredDay = this.filterByDay(day)
         return filteredDay ? filteredDay.schedules.filter((scheduleByDay) => this.hours.compareHour(indexHour, scheduleByDay.start)) : []
     }
 
+    //TODO renombrar, comprueba que no se redereen celdas para que no choquen
     schedulesInRange(day: string, indexHour: number): boolean {
-        const filteredDay: SchedulesByDay | undefined = this.filterByDay(day)
+        const filteredDay = this.filterByDay(day)
         return filteredDay
             ? filteredDay.schedules.filter((scheduleByDay) => this.hours.IndexInRange(scheduleByDay.start, scheduleByDay.end, indexHour)).length <= 0
             : false
     }
 
     private filterByDay = (scheduleDay: string): SchedulesByDay | undefined => this.schedulesByDays.find((schedulesByDay) => scheduleDay == schedulesByDay.day)
+
+    private compareSchedules = (schedules: ScheduleCell[], newSchedule: ScheduleCell): boolean => {
+        const isRepeated: ScheduleCell | undefined = schedules.find(
+            (schedule) => newSchedule.subjectName == schedule.subjectName && newSchedule.start == schedule.start
+        )
+        return typeof isRepeated != 'undefined'
+    }
 }
 
 export default SchedulesByDays

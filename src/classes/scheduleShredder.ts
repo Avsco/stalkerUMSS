@@ -25,10 +25,13 @@ class ScheduleShredder {
 
     pushSchedule(oldSchedules: ScheduleCell[], newSchedule: ScheduleCell): ScheduleCell[] {
         let schedules: ScheduleCell[]
-        const conflictiveSchedules = oldSchedules.filter((schedule) => this.hours.inRange(newSchedule.start, newSchedule.end, schedule.start))
+        const conflictiveSchedules = this.getConfictiveSchedules(oldSchedules, newSchedule)
         conflictiveSchedules.length > 0 ? (schedules = this.fragmentSchedules(newSchedule, conflictiveSchedules)) : (schedules = [...oldSchedules, newSchedule])
         return schedules
     }
+
+    private getConfictiveSchedules = (oldSchedules: ScheduleCell[], newSchedule: ScheduleCell) =>
+        oldSchedules.filter((schedule) => this.hours.inRange(newSchedule.start, newSchedule.end, schedule.start))
 
     private divideConflictivesSchedules = (divisionTime: string, conflictiveSchedules: ScheduleCell[]): ScheduleCell[] => {
         return conflictiveSchedules
