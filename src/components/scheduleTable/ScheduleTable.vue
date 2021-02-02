@@ -15,9 +15,10 @@
                 <template v-for="(valueOne, indexOne) in hours.dataForHTML()">
                     <tr :key="indexOne">
                         <template v-for="(valueTwo, indexTwo) in days">
-                            <td v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
+                            <th v-if="indexTwo == 0" :key="indexTwo" class="table_hours">
                                 <span>{{ valueOne }}</span>
-                            </td>
+                            </th>
+                            <td class="table_hours--final" :key="indexTwo" v-else-if="hours.dataForHTML().length == indexOne + 1"></td>
                             <ScheduleTableItem
                                 v-else-if="schedulesPerDay.getSchedules(valueTwo, indexOne).length > 0"
                                 :key="indexTwo"
@@ -28,18 +29,14 @@
                         </template>
                     </tr>
                 </template>
-                <tr>
-                    <td class="table_hours">
-                        <span>{{ hours.convert(hours.getValue(hours.data.length - 1)) }}</span>
-                    </td>
-                </tr>
             </tbody>
         </table>
+        <pre>{{ schedulesPerDay.schedulesByDays }}</pre>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 import ScheduleTableItem from './ScheduleTableItem.vue'
 
@@ -143,6 +140,10 @@ export default class extends Vue {
 
     &_cell {
         border: 1px solid $secondary_color;
+
+        &--final {
+            border: none;
+        }
     }
 }
 </style>

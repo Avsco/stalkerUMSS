@@ -23,15 +23,13 @@ class HoursManager {
         '2145'
     ]
 
-    getData = (): string[] => this.data.slice(0, -1)
-
     getValue = (index: number): string => this.data[index]
 
     getIndex = (value: string): number => this.data.indexOf(value)
 
     getLenght = (): number => this.data.length
 
-    dataForHTML = (): string[] => this.getData().map((data) => this.convert(data))
+    dataForHTML = (): string[] => this.data.map((data) => this.convert(data))
 
     convert = (hour: string): string => hour.slice(0, hour.length > 3 ? 2 : 1) + ':' + hour.slice(-2)
 
