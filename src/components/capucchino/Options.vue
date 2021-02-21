@@ -1,46 +1,48 @@
 <template>
     <aside class="options">
-        <div v-for="(valueOne, indexOne) in carrers" :key="indexOne">
-            <div class="options_nameCarrer" @click="showCarrer(indexOne, valueOne)">
-                <span>{{ valueOne.name | simplifyCareers | capitalize }}</span>
-                <span>></span>
-            </div>
-            <div v-if="indexOne == IndexCarrerActive">
-                <div class="options_level" v-for="(valueTwo, indexTwo) in carrerActive.levels" :key="indexTwo">
-                    <span @click="dropLevel(indexTwo)">{{ levels.get(valueTwo.code) }}</span>
-                    <div
-                        class="options_subject"
-                        v-show="activeLevels.includes(indexTwo)"
-                        v-for="(valueThree, indexThree) in carrerActive.levels[indexTwo].subjects"
-                        :key="indexThree"
-                    >
-                        <div>
-                            <span>{{ valueThree.name | capitalize }}</span>
-                            <span>Grupo</span>
-                        </div>
+        <HeaderOptions @show-carrers="displayMenu = !displayMenu" />
+        <div v-if="displayMenu">
+            <div v-for="(valueOne, indexOne) in carrers" :key="indexOne">
+                <div class="options_nameCarrer" @click="showCarrer(indexOne, valueOne)">
+                    <span>{{ valueOne.name | simplifyCareers | capitalize }}</span>
+                </div>
+                <div v-if="indexOne == IndexCarrerActive">
+                    <div class="options_level" v-for="(valueTwo, indexTwo) in carrerActive.levels" :key="indexTwo">
+                        <span @click="dropLevel(indexTwo)">{{ levels.get(valueTwo.code) }}</span>
                         <div
-                            v-for="(valueFour, indexFour) in carrerActive.levels[indexTwo].subjects[indexThree].groups"
-                            :key="indexFour"
-                            class="options_groups"
+                            class="options_subject"
+                            v-show="activeLevels.includes(indexTwo)"
+                            v-for="(valueThree, indexThree) in carrerActive.levels[indexTwo].subjects"
+                            :key="indexThree"
                         >
-                            <label :for="'group' + indexTwo + indexThree + indexFour">
-                                <span>
-                                    <input
-                                        type="checkbox"
-                                        :id="'group' + indexTwo + indexThree + indexFour"
-                                        :value="getSubjectMatter(indexTwo, indexThree, indexFour)"
-                                        v-model="subjectsMatter"
-                                    />
-                                    <span class="options_nameteacher">{{ valueFour.teacher }}</span>
-                                </span>
-                                <span>{{ valueFour.code }}</span>
-                            </label>
+                            <div>
+                                <span>{{ valueThree.name | capitalize }}</span>
+                                <span>Grupo</span>
+                            </div>
+                            <div
+                                v-for="(valueFour, indexFour) in carrerActive.levels[indexTwo].subjects[indexThree].groups"
+                                :key="indexFour"
+                                class="options_groups"
+                            >
+                                <label :for="'group' + indexTwo + indexThree + indexFour">
+                                    <span>
+                                        <input
+                                            type="checkbox"
+                                            :id="'group' + indexTwo + indexThree + indexFour"
+                                            :value="getSubjectMatter(indexTwo, indexThree, indexFour)"
+                                            v-model="subjectsMatter"
+                                        />
+                                        <span class="options_nameteacher">{{ valueFour.teacher }}</span>
+                                    </span>
+                                    <span>{{ valueFour.code }}</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="options_footer">SCESI 2021</div>
         </div>
-        <div class="options_footer">SCESI 2020</div>
     </aside>
 </template>
 
@@ -49,14 +51,20 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 
 import { BasicCarrer, Carrer } from '@/@types/cappuchino'
-
 import { SubjectMatter } from '@/@types/schedule'
 import LevelHash from '@/classes/levelHash'
 
-@Component({})
+import HeaderOptions from './HeaderOptions.vue'
+
+@Component({
+    components: {
+        HeaderOptions
+    }
+})
 export default class extends Vue {
     @Getter('capucchino/carrers') readonly carrers!: BasicCarrer[]
     @Getter('capucchino/carrerSelected') readonly carrerActive!: Carrer
+    displayMenu: boolean = false
     IndexCarrerActive: number = -1
     activeLevels: number[] = []
     levels: LevelHash = new LevelHash()
@@ -101,7 +109,6 @@ export default class extends Vue {
 @import '@/scss/abstracts/_variables.scss';
 
 .options {
-    border: 1px solid white;
     border-radius: $border_radius;
     display: block;
 
