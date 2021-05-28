@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <router-link class="header_linkmain" to="/">
-            <h2>SCESI</h2>
+            <h2 class="header_title">Docent Tracker</h2>
         </router-link>
         <Notifications class="header_notifications" />
     </header>
@@ -34,10 +34,11 @@ export default class extends Vue {}
 
     &_linkmain {
         text-decoration: none;
+    }
 
-        h2 {
-            color: $font_color;
-        }
+    &_title {
+        font-size: 2rem;
+        color: $font_color;
     }
 
     &_notifications {
