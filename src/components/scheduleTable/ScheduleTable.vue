@@ -31,7 +31,6 @@
                 </template>
             </tbody>
         </table>
-        <pre>{{ schedulesPerDay.schedulesByDays }}</pre>
     </div>
 </template>
 
