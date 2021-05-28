@@ -23,7 +23,6 @@ class SchedulesByDays {
 
         if (!isRepeated) {
             this.schedulesByDays = this.schedulesByDays.filter((schedulesByDay) => !this.compareDay(schedulesByDay.day, schedule.day))
-            //TODO: verificar que no se repitan los mismo horarios
             const schedulesOrganized = this.scheduleShredder.pushSchedule(scheduleDay.schedules, schedule)
             scheduleDay.schedules = schedulesOrganized
             this.schedulesByDays.push(scheduleDay)
